@@ -236,11 +236,30 @@
         .btn-add-estimate.btn-add-material { background: #64748b; }
         .btn-add-estimate.btn-add-material:hover { background: #475569; }
         .policy-estimate-list { max-height: 120px; overflow-y: auto; margin: 8px 0; }
-        .policy-estimate-item { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 6px 0; font-size: 0.85rem; border-bottom: 1px solid var(--border); }
-        .policy-estimate-item .policy-item-name { flex: 1; min-width: 0; padding: 4px 8px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.85rem; font-family: inherit; }
+        .policy-estimate-item { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 6px 0; font-size: 0.85rem; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+        .policy-estimate-item .policy-item-name { flex: 1 1 140px; min-width: 0; padding: 4px 8px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.85rem; font-family: inherit; }
+        .policy-estimate-item .policy-item-unit,
+        .policy-estimate-item .policy-item-qty,
+        .policy-estimate-item .policy-item-unitprice {
+            width: 60px;
+            padding: 4px 6px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-family: inherit;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        .policy-estimate-item .policy-item-qty,
+        .policy-estimate-item .policy-item-unitprice {
+            text-align: right;
+        }
         .policy-estimate-item .policy-item-total { width: 90px; padding: 4px 8px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.85rem; font-family: inherit; text-align: right; }
         .policy-estimate-item .policy-item-name:focus,
-        .policy-estimate-item .policy-item-total:focus { outline: none; border-color: var(--accent); }
+        .policy-estimate-item .policy-item-total:focus,
+        .policy-estimate-item .policy-item-unit:focus,
+        .policy-estimate-item .policy-item-qty:focus,
+        .policy-estimate-item .policy-item-unitprice:focus { outline: none; border-color: var(--accent); }
         .policy-estimate-item .remove-btn { background: none; border: none; color: #94a3b8; cursor: pointer; padding: 0 4px; font-size: 1.1rem; flex-shrink: 0; }
         .policy-estimate-item .remove-btn:hover { color: #ef4444; }
         .policy-estimate-item .order-btn-group { display: flex; flex-direction: column; gap: 2px; flex-shrink: 0; }
@@ -906,6 +925,21 @@
                     nameInput.value = e.name;
                     nameInput.setAttribute('aria-label', '품목명');
                     nameInput.addEventListener('input', () => { estimateItems[i].name = nameInput.value; });
+                    const unitInput = document.createElement('input');
+                    unitInput.type = 'text';
+                    unitInput.className = 'policy-item-unit';
+                    unitInput.value = e.unit || '';
+                    unitInput.placeholder = '단위';
+                    unitInput.setAttribute('aria-label', '단위');
+                    unitInput.addEventListener('input', () => { estimateItems[i].unit = unitInput.value; });
+                    const qtyInput = document.createElement('input');
+                    qtyInput.type = 'number';
+                    qtyInput.className = 'policy-item-qty';
+                    qtyInput.value = (e.qty !== undefined && e.qty !== null && e.qty !== '') ? e.qty : '';
+                    qtyInput.min = 0;
+                    qtyInput.step = 1;
+                    qtyInput.placeholder = '수량';
+                    qtyInput.setAttribute('aria-label', '수량');
                     const totalInput = document.createElement('input');
                     totalInput.type = 'number';
                     totalInput.className = 'policy-item-total';
@@ -918,6 +952,32 @@
                         estimateItems[i].total = isNaN(v) ? 0 : Math.max(0, v);
                         updatePolicyTotal();
                     });
+                    const unitPriceInput = document.createElement('input');
+                    unitPriceInput.type = 'number';
+                    unitPriceInput.className = 'policy-item-unitprice';
+                    unitPriceInput.value = (e.unitPrice !== undefined && e.unitPrice !== null && e.unitPrice !== '') ? e.unitPrice : '';
+                    unitPriceInput.min = 0;
+                    unitPriceInput.step = 1;
+                    unitPriceInput.placeholder = '단가';
+                    unitPriceInput.setAttribute('aria-label', '단가');
+                    function recalcTotalFromUnit() {
+                        const qtyVal = parseFloat(qtyInput.value);
+                        const upVal = parseInt(unitPriceInput.value, 10);
+                        const qtyNum = isNaN(qtyVal) ? null : qtyVal;
+                        const upNum = isNaN(upVal) ? null : upVal;
+                        estimateItems[i].qty = qtyNum === null ? '' : qtyNum;
+                        estimateItems[i].unitPrice = upNum === null ? '' : upNum;
+                        if (qtyNum !== null && upNum !== null) {
+                            const newTotal = Math.round(qtyNum * upNum);
+                            estimateItems[i].total = newTotal;
+                            totalInput.value = newTotal;
+                            updatePolicyTotal();
+                        } else {
+                            updatePolicyTotal();
+                        }
+                    }
+                    qtyInput.addEventListener('input', recalcTotalFromUnit);
+                    unitPriceInput.addEventListener('input', recalcTotalFromUnit);
                     const removeBtn = document.createElement('button');
                     removeBtn.type = 'button';
                     removeBtn.className = 'remove-btn';
@@ -933,6 +993,9 @@
                     totalWrap.appendChild(removeBtn);
                     row.appendChild(orderBtnGroup);
                     row.appendChild(nameInput);
+                    row.appendChild(unitInput);
+                    row.appendChild(qtyInput);
+                    row.appendChild(unitPriceInput);
                     row.appendChild(totalWrap);
                     policyEstimateList.appendChild(row);
                 });
@@ -953,7 +1016,7 @@
             const btnAddEstimateRow = document.getElementById('btnAddEstimateRow');
             if (btnAddEstimateRow) {
                 btnAddEstimateRow.addEventListener('click', () => {
-                    estimateItems.push({ name: '직접 입력', total: 0, withExtra: false });
+                    estimateItems.push({ name: '직접 입력', total: 0, withExtra: false, unit: '', qty: '', unitPrice: '' });
                     renderPolicyEstimate();
                     const lastRow = policyEstimateList.querySelector('.policy-estimate-item:last-child');
                     if (lastRow) {
@@ -1080,12 +1143,18 @@
                     });
                 }
                 estimateItems.forEach(function(e) {
+                    var qtyVal = (e.qty !== undefined && e.qty !== null && e.qty !== '') ? Number(e.qty) : null;
+                    var unitPriceVal = (e.unitPrice !== undefined && e.unitPrice !== null && e.unitPrice !== '') ? Number(e.unitPrice) : null;
+                    var amount = e.total || 0;
+                    if (qtyVal !== null && !isNaN(qtyVal) && unitPriceVal !== null && !isNaN(unitPriceVal)) {
+                        amount = Math.round(qtyVal * unitPriceVal);
+                    }
                     rawItems.push({
                         name: e.name || '',
-                        amount: e.total || 0,
-                        unit: '',
-                        qty: '',
-                        unitPrice: '',
+                        amount: amount,
+                        unit: e.unit != null ? String(e.unit) : '',
+                        qty: qtyVal !== null && !isNaN(qtyVal) ? String(qtyVal) : '',
+                        unitPrice: unitPriceVal !== null && !isNaN(unitPriceVal) ? unitPriceVal : '',
                         remark: ''
                     });
                 });
@@ -1364,16 +1433,16 @@
                             (mat ? '<button type="button" class="btn-add-estimate btn-add-material">자재비만 추가</button>' : '') +
                             '</span></div>';
                         row.querySelector('.btn-add-base').onclick = () => {
-                            estimateItems.push({ name: item.name, total: total, withExtra: false });
+                            estimateItems.push({ name: item.name, total: total, withExtra: false, unit: '', qty: '', unitPrice: '' });
                             renderPolicyEstimate();
                         };
                         row.querySelector('.btn-add-with-extra').onclick = () => {
-                            estimateItems.push({ name: item.name + ' (추가 시공비)', total: extraFee, withExtra: true });
+                            estimateItems.push({ name: item.name + ' (추가 시공비)', total: extraFee, withExtra: true, unit: '', qty: '', unitPrice: '' });
                             renderPolicyEstimate();
                         };
                         if (mat) {
                             row.querySelector('.btn-add-material').onclick = () => {
-                                estimateItems.push({ name: item.name + ' (자재비)', total: mat });
+                                estimateItems.push({ name: item.name + ' (자재비)', total: mat, withExtra: false, unit: '', qty: '', unitPrice: '' });
                                 renderPolicyEstimate();
                             };
                         }
@@ -1390,12 +1459,12 @@
                             (mat ? '<button type="button" class="btn-add-estimate btn-add-material">자재비만 추가</button>' : '') +
                             '</span></div>';
                         row.querySelector('.btn-add-estimate:not(.btn-add-material)').onclick = () => {
-                            estimateItems.push({ name: item.name, total: total, withExtra: false });
+                            estimateItems.push({ name: item.name, total: total, withExtra: false, unit: '', qty: '', unitPrice: '' });
                             renderPolicyEstimate();
                         };
                         if (mat) {
                             row.querySelector('.btn-add-material').onclick = () => {
-                                estimateItems.push({ name: item.name + ' (자재비)', total: mat });
+                                estimateItems.push({ name: item.name + ' (자재비)', total: mat, withExtra: false, unit: '', qty: '', unitPrice: '' });
                                 renderPolicyEstimate();
                             };
                         }
