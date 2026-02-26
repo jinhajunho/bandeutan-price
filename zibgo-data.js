@@ -1,5 +1,5 @@
 window.ZIBGO_DATA = {
-  "serviceFee": 15000,
+  "serviceFee": 20000,
   "categories": [
     {
       "id": "실내-창호-가구",
@@ -11,53 +11,53 @@ window.ZIBGO_DATA = {
           "items": [
             {
               "name": "문 경첩 교체",
-              "installFee": 45000,
+              "installFee": 49500,
               "material": {
                 "mid": null,
-                "general": 7000,
+                "general": 7700,
                 "premium": null
               },
-              "note": "이지/나비 통합 / 추가 시공비: 40,000원"
+              "note": "이지/나비 통합 / 추가 시공비: 44,000원"
             },
             {
               "name": "문 손잡이 교체",
-              "installFee": 40000,
+              "installFee": 44000,
               "material": {
                 "mid": null,
-                "general": 50000,
+                "general": 55000,
                 "premium": null
               },
-              "note": "레버/푸쉬풀 통합 / 추가 시공비: 30,000원"
+              "note": "레버/푸쉬풀 통합 / 추가 시공비: 33,000원"
             },
             {
               "name": "도어 교체 (ABS)",
-              "installFee": 120000,
+              "installFee": 132000,
               "material": {
                 "mid": null,
-                "general": 120000,
+                "general": 132000,
                 "premium": null
               },
-              "note": "기본규격 / 추가 시공비: 100,000원"
+              "note": "기본규격 / 추가 시공비: 110,000원"
             },
             {
               "name": "도어+문틀 교체",
-              "installFee": 200000,
+              "installFee": 220000,
               "material": {
                 "mid": null,
-                "general": 200000,
+                "general": 220000,
                 "premium": null
               },
-              "note": "전체 교체 / 추가 시공비: 180,000원"
+              "note": "전체 교체 / 추가 시공비: 198,000원"
             },
             {
               "name": "도어 처짐 보수",
-              "installFee": 80000,
+              "installFee": 88000,
               "material": {
                 "mid": null,
                 "general": 0,
                 "premium": null
               },
-              "note": "조임/대패 통합 / 추가 시공비: 60,000원"
+              "note": "조임/대패 통합 / 추가 시공비: 66,000원"
             }
           ]
         },
@@ -67,20 +67,20 @@ window.ZIBGO_DATA = {
           "items": [
             {
               "name": "3연동 중문 설치",
-              "installFee": 200000,
+              "installFee": 220000,
               "material": {
                 "mid": null,
-                "general": 800000,
+                "general": 880000,
                 "premium": null
               },
               "note": "신규 설치"
             },
             {
               "name": "3연동 중문 수리",
-              "installFee": 120000,
+              "installFee": 132000,
               "material": {
                 "mid": null,
-                "general": 130000,
+                "general": 143000,
                 "premium": null
               },
               "note": "조정/부품교체"
@@ -93,20 +93,20 @@ window.ZIBGO_DATA = {
           "items": [
             {
               "name": "디지털 도어락 설치",
-              "installFee": 150000,
+              "installFee": 165000,
               "material": {
                 "mid": null,
-                "general": 300000,
+                "general": 330000,
                 "premium": null
               },
               "note": "일반/푸쉬풀 통합"
             },
             {
               "name": "도어클로저 설치",
-              "installFee": 50000,
+              "installFee": 55000,
               "material": {
                 "mid": null,
-                "general": 38000,
+                "general": 41800,
                 "premium": null
               },
               "note": "방화문용"
@@ -119,10 +119,10 @@ window.ZIBGO_DATA = {
           "items": [
             {
               "name": "터닝도어 설치",
-              "installFee": 200000,
+              "installFee": 220000,
               "material": {
                 "mid": null,
-                "general": 450000,
+                "general": 495000,
                 "premium": null
               },
               "note": "기본규격"
@@ -135,10 +135,10 @@ window.ZIBGO_DATA = {
           "items": [
             {
               "name": "플로어힌지 교체",
-              "installFee": 180000,
+              "installFee": 198000,
               "material": {
                 "mid": null,
-                "general": 60000,
+                "general": 66000,
                 "premium": null
               },
               "note": "일반/박스포함 통합"
@@ -151,40 +151,40 @@ window.ZIBGO_DATA = {
           "items": [
             {
               "name": "방충망 교체 (소형)",
-              "installFee": 10000,
+              "installFee": 11000,
               "material": {
                 "mid": null,
-                "general": 35000,
+                "general": 38500,
                 "premium": null
               },
               "note": "주방/욕실"
             },
             {
               "name": "방충망 교체 (중형)",
-              "installFee": 15000,
+              "installFee": 16500,
               "material": {
                 "mid": null,
-                "general": 70000,
+                "general": 77000,
                 "premium": null
               },
               "note": "방/반창"
             },
             {
               "name": "방충망 교체 (대형)",
-              "installFee": 20000,
+              "installFee": 22000,
               "material": {
                 "mid": null,
-                "general": 80000,
+                "general": 88000,
                 "premium": null
               },
               "note": "거실창"
             },
             {
               "name": "롤 방충망 설치",
-              "installFee": 95000,
+              "installFee": 104500,
               "material": {
                 "mid": null,
-                "general": 80000,
+                "general": 88000,
                 "premium": null
               },
               "note": "현관/PJ 통합"
@@ -197,13 +197,13 @@ window.ZIBGO_DATA = {
           "items": [
             {
               "name": "벽체 설치/보수",
-              "installFee": 600000,
+              "installFee": 660000,
               "material": {
                 "mid": null,
-                "general": 100000,
+                "general": 110000,
                 "premium": null
               },
-              "note": "가벽/파손 통합 / 추가 시공비: 60,000원"
+              "note": "가벽/파손 통합 / 추가 시공비: 66,000원"
             }
           ]
         },
@@ -213,7 +213,7 @@ window.ZIBGO_DATA = {
           "items": [
             {
               "name": "실내 설치물 (커튼/선반)",
-              "installFee": 100000,
+              "installFee": 110000,
               "material": {
                 "mid": null,
                 "general": 0,
@@ -229,10 +229,10 @@ window.ZIBGO_DATA = {
           "items": [
             {
               "name": "도배 보수",
-              "installFee": 200000,
+              "installFee": 220000,
               "material": {
                 "mid": null,
-                "general": 9000,
+                "general": 9900,
                 "premium": null
               },
               "note": "5평 이내"
@@ -245,80 +245,80 @@ window.ZIBGO_DATA = {
           "items": [
             {
               "name": "싱크대 경첩",
-              "installFee": 30000,
+              "installFee": 33000,
               "material": {
                 "mid": null,
-                "general": 3500,
+                "general": 3850,
                 "premium": null
               },
-              "note": "15T/18T 통합 / 추가 시공비: 5,000원"
+              "note": "15T/18T 통합 / 추가 시공비: 5,500원"
             },
             {
               "name": "서랍 레일",
-              "installFee": 30000,
+              "installFee": 33000,
               "material": {
                 "mid": null,
-                "general": 5000,
+                "general": 5500,
                 "premium": null
               },
-              "note": "3단볼레일 기준 / 추가 시공비: 20,000원"
+              "note": "3단볼레일 기준 / 추가 시공비: 22,000원"
             },
             {
               "name": "싱크대 수전",
-              "installFee": 60000,
+              "installFee": 66000,
               "material": {
                 "mid": null,
-                "general": 50000,
+                "general": 55000,
                 "premium": null
               },
-              "note": "원홀/투홀 통합 / 추가 시공비: 40,000원"
+              "note": "원홀/투홀 통합 / 추가 시공비: 44,000원"
             },
             {
               "name": "배수구 세트",
-              "installFee": 60000,
+              "installFee": 66000,
               "material": {
                 "mid": null,
-                "general": 28000,
+                "general": 30800,
                 "premium": null
               },
               "note": "스텐 배수통"
             },
             {
               "name": "주방 후드",
-              "installFee": 100000,
+              "installFee": 110000,
               "material": {
                 "mid": null,
-                "general": 80000,
+                "general": 88000,
                 "premium": null
               },
               "note": "통후드 기준"
             },
             {
               "name": "가스 쇼바",
-              "installFee": 30000,
+              "installFee": 33000,
               "material": {
                 "mid": null,
-                "general": 18000,
+                "general": 19800,
                 "premium": null
               },
               "note": "상부장 도어용"
             },
             {
               "name": "상판 보수",
-              "installFee": 200000,
+              "installFee": 220000,
               "material": {
                 "mid": null,
-                "general": 20000,
+                "general": 22000,
                 "premium": null
               },
               "note": "크랙 보수"
             },
             {
               "name": "하부장 높이조절",
-              "installFee": 40000,
+              "installFee": 44000,
               "material": {
                 "mid": null,
-                "general": 15000,
+                "general": 16500,
                 "premium": null
               },
               "note": "1통당"
@@ -331,30 +331,30 @@ window.ZIBGO_DATA = {
           "items": [
             {
               "name": "안전바 설치",
-              "installFee": 90000,
+              "installFee": 99000,
               "material": {
                 "mid": null,
-                "general": 100000,
+                "general": 110000,
                 "premium": null
               },
               "note": "실내/방문 통합 (방문용 기준)"
             },
             {
               "name": "센서/스위치 설치",
-              "installFee": 100000,
+              "installFee": 110000,
               "material": {
                 "mid": null,
-                "general": 35000,
+                "general": 38500,
                 "premium": null
               },
               "note": "무선/센서 통합"
             },
             {
               "name": "현관 안전의자",
-              "installFee": 35000,
+              "installFee": 38500,
               "material": {
                 "mid": null,
-                "general": 80000,
+                "general": 88000,
                 "premium": null
               },
               "note": "벽고정형"
@@ -373,13 +373,13 @@ window.ZIBGO_DATA = {
           "items": [
             {
               "name": "석재/마감재 보수",
-              "installFee": 350000,
+              "installFee": 385000,
               "material": {
                 "mid": null,
-                "general": 200000,
+                "general": 220000,
                 "premium": null
               },
-              "note": "화강석/판넬/페인트 통합 / 추가 시공비: 150,000원"
+              "note": "화강석/판넬/페인트 통합 / 추가 시공비: 165,000원"
             }
           ]
         },
@@ -392,10 +392,10 @@ window.ZIBGO_DATA = {
               "installFee": 800000,
               "material": {
                 "mid": null,
-                "general": 700000,
+                "general": 770000,
                 "premium": null
               },
-              "note": "샌드위치/우레탄 통합 / 추가 시공비: 250,000원"
+              "note": "샌드위치/우레탄 통합 / 추가 시공비: 275,000원"
             }
           ]
         },
@@ -405,13 +405,13 @@ window.ZIBGO_DATA = {
           "items": [
             {
               "name": "데크/난간 보수",
-              "installFee": 300000,
+              "installFee": 330000,
               "material": {
                 "mid": null,
-                "general": 250000,
+                "general": 275000,
                 "premium": null
               },
-              "note": "방부목/합성/금속 통합 / 추가 시공비: 100,000원"
+              "note": "방부목/합성/금속 통합 / 추가 시공비: 110,000원"
             }
           ]
         },
@@ -421,10 +421,10 @@ window.ZIBGO_DATA = {
           "items": [
             {
               "name": "어닝 설치",
-              "installFee": 200000,
+              "installFee": 220000,
               "material": {
                 "mid": null,
-                "general": 140000,
+                "general": 154000,
                 "premium": null
               },
               "note": "설치비 + 자재비"
@@ -443,63 +443,63 @@ window.ZIBGO_DATA = {
           "items": [
             {
               "name": "스위치 교체",
-              "installFee": 50000,
+              "installFee": 55000,
               "material": {
                 "mid": null,
-                "general": 20000,
+                "general": 22000,
                 "premium": null
               },
               "note": "스마트형 기준"
             },
             {
               "name": "콘센트 교체",
-              "installFee": 50000,
+              "installFee": 55000,
               "material": {
                 "mid": null,
-                "general": 6000,
+                "general": 6600,
                 "premium": null
               },
-              "note": "2구 기준 / 추가 시공비: 30,000원"
+              "note": "2구 기준 / 추가 시공비: 33,000원"
             },
             {
               "name": "LED 방등 교체",
-              "installFee": 40000,
+              "installFee": 44000,
               "material": {
                 "mid": null,
-                "general": 80000,
+                "general": 88000,
                 "premium": null
               },
               "note": "방등"
             },
             {
               "name": "LED 거실등 교체",
-              "installFee": 80000,
+              "installFee": 88000,
               "material": {
                 "mid": null,
-                "general": 200000,
+                "general": 220000,
                 "premium": null
               },
-              "note": "3등용 기준 / 추가 시공비: 150,000원"
+              "note": "3등용 기준 / 추가 시공비: 165,000원"
             },
             {
               "name": "LED 주방등 교체",
-              "installFee": 70000,
+              "installFee": 77000,
               "material": {
                 "mid": null,
-                "general": 80000,
+                "general": 88000,
                 "premium": null
               },
-              "note": "펜던트 기준 / 추가 시공비: 40,000원"
+              "note": "펜던트 기준 / 추가 시공비: 44,000원"
             },
             {
               "name": "다운라이트 (타공)",
-              "installFee": 60000,
+              "installFee": 66000,
               "material": {
                 "mid": null,
-                "general": 20000,
+                "general": 22000,
                 "premium": null
               },
-              "note": "신규 타공 / 추가 시공비: 40,000원"
+              "note": "신규 타공 / 추가 시공비: 44,000원"
             }
           ]
         },
@@ -509,7 +509,7 @@ window.ZIBGO_DATA = {
           "items": [
             {
               "name": "누전 점검/진단",
-              "installFee": 200000,
+              "installFee": 220000,
               "material": {
                 "mid": null,
                 "general": 0,
@@ -519,20 +519,20 @@ window.ZIBGO_DATA = {
             },
             {
               "name": "차단기 교체",
-              "installFee": 100000,
+              "installFee": 110000,
               "material": {
                 "mid": null,
-                "general": 8000,
+                "general": 8800,
                 "premium": null
               },
               "note": "메인/분기 통합 (메인 기준)"
             },
             {
               "name": "배선 교체 (구간당)",
-              "installFee": 200000,
+              "installFee": 220000,
               "material": {
                 "mid": null,
-                "general": 20000,
+                "general": 22000,
                 "premium": null
               },
               "note": "불량내선 교체"
@@ -545,30 +545,30 @@ window.ZIBGO_DATA = {
           "items": [
             {
               "name": "전기 배선 교체",
-              "installFee": 110000,
+              "installFee": 121000,
               "material": {
                 "mid": null,
-                "general": 50000,
+                "general": 55000,
                 "premium": null
               },
               "note": "평당 (전등+전열 통합)"
             },
             {
               "name": "분전함 교체",
-              "installFee": 200000,
+              "installFee": 220000,
               "material": {
                 "mid": null,
-                "general": 100000,
+                "general": 110000,
                 "premium": null
               },
               "note": "6회로 기준"
             },
             {
               "name": "단독 배선 공사",
-              "installFee": 400000,
+              "installFee": 440000,
               "material": {
                 "mid": null,
-                "general": 150000,
+                "general": 165000,
                 "premium": null
               },
               "note": "에어컨/주방 등"
@@ -587,67 +587,67 @@ window.ZIBGO_DATA = {
           "items": [
             {
               "name": "욕실 악세사리",
-              "installFee": 30000,
+              "installFee": 33000,
               "material": {
                 "mid": null,
-                "general": 8000,
+                "general": 8800,
                 "premium": null
               },
-              "note": "휴지/수건걸이 / 추가 시공비: 10,000원"
+              "note": "휴지/수건걸이 / 추가 시공비: 11,000원"
             },
             {
               "name": "양변기 교체",
-              "installFee": 120000,
+              "installFee": 132000,
               "material": {
                 "mid": null,
-                "general": 120000,
+                "general": 132000,
                 "premium": null
               },
-              "note": "투피스/원피스 통합 / 추가 시공비: 100,000원"
+              "note": "투피스/원피스 통합 / 추가 시공비: 110,000원"
             },
             {
               "name": "양변기 부속",
-              "installFee": 60000,
+              "installFee": 66000,
               "material": {
                 "mid": null,
-                "general": 20000,
+                "general": 22000,
                 "premium": null
               },
               "note": "물탱크 부속 전체"
             },
             {
               "name": "세면대 교체",
-              "installFee": 100000,
+              "installFee": 110000,
               "material": {
                 "mid": null,
-                "general": 180000,
+                "general": 198000,
                 "premium": null
               },
               "note": "긴다리/반다리 통합"
             },
             {
               "name": "수전 교체 (세면/샤워)",
-              "installFee": 80000,
+              "installFee": 88000,
               "material": {
                 "mid": null,
-                "general": 90000,
+                "general": 99000,
                 "premium": null
               },
               "note": "세면대/샤워기 통합"
             },
             {
               "name": "욕실 환풍기",
-              "installFee": 40000,
+              "installFee": 44000,
               "material": {
                 "mid": null,
-                "general": 28000,
+                "general": 30800,
                 "premium": null
               },
               "note": "일반형"
             },
             {
               "name": "욕실장/거울",
-              "installFee": 100000,
+              "installFee": 110000,
               "material": {
                 "mid": null,
                 "general": 0,
@@ -657,10 +657,10 @@ window.ZIBGO_DATA = {
             },
             {
               "name": "욕조 교체",
-              "installFee": 330000,
+              "installFee": 363000,
               "material": {
                 "mid": null,
-                "general": 330000,
+                "general": 363000,
                 "premium": null
               },
               "note": "철거비 포함"
@@ -673,43 +673,43 @@ window.ZIBGO_DATA = {
           "items": [
             {
               "name": "수도배관 연장",
-              "installFee": 250000,
+              "installFee": 275000,
               "material": {
                 "mid": null,
-                "general": 30000,
+                "general": 33000,
                 "premium": null
               },
-              "note": "벽/바닥 통합 / 추가 시공비: 30,000원"
+              "note": "벽/바닥 통합 / 추가 시공비: 33,000원"
             },
             {
               "name": "배수관 이동/교체",
-              "installFee": 300000,
+              "installFee": 330000,
               "material": {
                 "mid": null,
-                "general": 40000,
+                "general": 44000,
                 "premium": null
               },
               "note": "바닥/벽 통합"
             },
             {
               "name": "난방분배기 교체",
-              "installFee": 90000,
+              "installFee": 99000,
               "material": {
                 "mid": null,
-                "general": 10000,
+                "general": 11000,
                 "premium": null
               },
               "note": "1구당"
             },
             {
               "name": "퇴수밸브 교체",
-              "installFee": 80000,
+              "installFee": 88000,
               "material": {
                 "mid": null,
-                "general": 5000,
+                "general": 5500,
                 "premium": null
               },
-              "note": "단독 작업 / 추가 시공비: 30,000원"
+              "note": "단독 작업 / 추가 시공비: 33,000원"
             }
           ]
         },
@@ -719,7 +719,7 @@ window.ZIBGO_DATA = {
           "items": [
             {
               "name": "누수 탐지비",
-              "installFee": 300000,
+              "installFee": 330000,
               "material": {
                 "mid": null,
                 "general": 0,
@@ -735,10 +735,10 @@ window.ZIBGO_DATA = {
           "items": [
             {
               "name": "정밀 누수 진단비",
-              "installFee": 500000,
+              "installFee": 550000,
               "material": {
                 "mid": null,
-                "general": 200000,
+                "general": 220000,
                 "premium": null
               },
               "note": "리포트비 별도"
@@ -751,20 +751,20 @@ window.ZIBGO_DATA = {
           "items": [
             {
               "name": "배관 누수 공사",
-              "installFee": 600000,
+              "installFee": 660000,
               "material": {
                 "mid": null,
-                "general": 50000,
+                "general": 55000,
                 "premium": null
               },
               "note": "천정/벽/바닥 통합 (천정 기준)"
             },
             {
               "name": "욕실 방수 공사",
-              "installFee": 600000,
+              "installFee": 660000,
               "material": {
                 "mid": null,
-                "general": 200000,
+                "general": 220000,
                 "premium": null
               },
               "note": "트렌치/유가 통합"

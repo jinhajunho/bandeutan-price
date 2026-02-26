@@ -61,6 +61,12 @@
             font-size: 20px;
             font-weight: bold;
         }
+        .logo-img {
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
+            display: block;
+        }
         .brand-title {
             font-size: 1.25rem;
             font-weight: 800;
@@ -302,6 +308,18 @@
         }
         .nest-discount-rate:focus { outline: none; border-color: var(--accent); }
         .nest-discount-wrap .pct { color: var(--text-grey); font-size: 0.85rem; font-weight: 600; }
+        .nest-discount-mode { display: inline-flex; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+        .nest-discount-mode .btn-mode { border: none; padding: 4px 8px; font-size: 0.8rem; background: #f1f5f9; color: var(--text-grey); cursor: pointer; }
+        .nest-discount-mode .btn-mode:hover { background: #e2e8f0; }
+        .nest-discount-mode .btn-mode.active { background: var(--accent); color: white; font-weight: 600; }
+        .nest-discount-input-won.hide { display: none; }
+        .nest-discount-input-pct.hide { display: none; }
+        #nestDiscountAmount { width: 72px; }
+        .seal-controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .btn-seal-clear { font-size: 0.8rem; color: var(--text-grey); background: none; border: 1px solid var(--border); border-radius: 6px; padding: 4px 8px; cursor: pointer; }
+        .btn-seal-clear:hover { background: #f1f5f9; color: var(--text-dark); }
+        .seal-saved-hint { font-size: 0.8rem; color: var(--text-grey); margin-top: 4px; display: block; }
+        .seal-default-hint { display: block; font-size: 0.75rem; color: var(--text-grey); margin-top: 2px; }
         #policyServiceFee { font-weight: 700; }
         .policy-total #policyTotal { font-weight: 800; color: var(--accent); }
         .policy-total .total-original { text-decoration: line-through; font-size: 0.8em; font-weight: 600; color: var(--text-grey); margin-right: 6px; }
@@ -424,7 +442,22 @@
 
         /* PDF 출력 영역 (화면에서는 숨김) */
         .pdf-wrap { display: none; position: absolute; left: -9999px; }
+        .pdf-preview-toolbar {
+            position: sticky; top: 0; left: 0; right: 0; z-index: 10001;
+            display: flex; align-items: center; justify-content: center; gap: 12px;
+            padding: 12px 16px; background: #1e293b; color: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .btn-pdf-close, .btn-pdf-download {
+            padding: 8px 16px; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer;
+        }
+        .btn-pdf-close { background: #64748b; color: #fff; }
+        .btn-pdf-close:hover { background: #475569; }
+        .btn-pdf-download { background: var(--accent); color: #fff; }
+        .btn-pdf-download:hover { background: #1d4ed8; }
+        .pdf-preview-body { padding: 16px; overflow-y: auto; max-height: calc(100vh - 56px); }
         @media print {
+            .pdf-preview-toolbar { display: none !important; }
             body * { visibility: hidden; }
             .pdf-wrap, .pdf-wrap * { visibility: visible; }
             .pdf-wrap { display: block !important; position: static; left: 0; }
@@ -441,7 +474,8 @@
     <div class="header">
         <div class="brand-row">
             <div class="logo-box">
-                <div class="logo-icon"><i class="ri-hammer-fill"></i></div>
+                <img src="logo.png" alt="로고" class="logo-img" onerror="this.style.display='none'; var next=this.nextElementSibling; if(next){ next.style.display='flex'; }">
+                <div class="logo-icon" style="display:none;"><i class="ri-hammer-fill"></i></div>
                 <div class="brand-title">반듯한시공</div>
             </div>
             <button type="button" class="btn-quote-open" id="btnQuoteOpen">
@@ -518,7 +552,12 @@
                         </div>
                         <div class="form-group">
                             <label for="supplierSealFile">도장 이미지 (선택)</label>
-                            <input type="file" id="supplierSealFile" accept="image/*" style="font-size:0.85rem;">
+                            <span class="seal-default-hint">같은 폴더에 seal-default.png를 두면 업로드 없이 모든 기기에서 사용됩니다.</span>
+                            <span class="seal-controls">
+                                <input type="file" id="supplierSealFile" accept="image/*" style="font-size:0.85rem;">
+                                <button type="button" class="btn-seal-clear" id="btnSealClear" title="저장된 기본 도장 삭제" style="display:none;">저장된 도장 삭제</button>
+                            </span>
+                            <span class="seal-saved-hint" id="sealSavedHint" style="display:none;">※ 기본 도장이 저장되어 있습니다.</span>
                         </div>
                     </div>
                     <div class="form-group">
@@ -586,9 +625,13 @@
         </div>
     </div>
 
-    <!-- PDF 출력용 (인쇄 시에만 표시) -->
+    <!-- PDF 출력용 (미리보기 + 다운로드/닫기 버튼) -->
     <div id="pdfWrap" class="pdf-wrap">
-        <div id="pdfTemplate"></div>
+        <div class="pdf-preview-toolbar" id="pdfPreviewToolbar">
+            <button type="button" class="btn-pdf-close" id="btnPdfClose">닫기</button>
+            <button type="button" class="btn-pdf-download" id="btnPdfDownload">PDF 다운로드</button>
+        </div>
+        <div id="pdfTemplate" class="pdf-preview-body"></div>
     </div>
 
     <!-- 표준 견적 산출 (메인 페이지) -->
@@ -610,8 +653,18 @@
             <button type="button" class="btn-add-row" id="btnAddEstimateRow"><i class="ri-add-line"></i> 행 추가</button>
             <span class="nest-discount-wrap">
                 <button type="button" class="btn-nest-discount" id="btnNestDiscount" aria-pressed="false">둥지 할인</button>
-                <input type="number" id="nestDiscountRate" class="nest-discount-rate" min="0" max="100" value="10" aria-label="할인율">
-                <span class="pct">%</span>
+                <span class="nest-discount-mode">
+                    <button type="button" class="btn-mode btn-mode-pct active" id="btnNestModePct" aria-pressed="true">%</button>
+                    <button type="button" class="btn-mode btn-mode-won" id="btnNestModeWon" aria-pressed="false">원</button>
+                </span>
+                <span class="nest-discount-input-pct" id="nestInputPctWrap">
+                    <input type="number" id="nestDiscountRate" class="nest-discount-rate" min="0" max="100" value="10" aria-label="할인율">
+                    <span class="pct">%</span>
+                </span>
+                <span class="nest-discount-input-won hide" id="nestInputWonWrap">
+                    <input type="number" id="nestDiscountAmount" class="nest-discount-rate" min="0" value="0" aria-label="할인 금액">
+                    <span class="pct">원</span>
+                </span>
             </span>
         </div>
         <div class="policy-divider"></div>
@@ -694,14 +747,50 @@
                 if (btnSave) btnSave.addEventListener('click', closeModal);
                 if (modal) modal.addEventListener('click', function(e) { if (e.target === modal) closeModal(); });
                 var sealFile = document.getElementById('supplierSealFile');
+                var btnSealClear = document.getElementById('btnSealClear');
+                var sealSavedHint = document.getElementById('sealSavedHint');
+                var SEAL_STORAGE_KEY = 'bandeutan_seal_dataurl';
+                function applySavedSeal() {
+                    try {
+                        var saved = localStorage.getItem(SEAL_STORAGE_KEY);
+                        if (saved && saved.indexOf('data:') === 0) {
+                            window._quoteSealDataUrl = saved;
+                            if (btnSealClear) btnSealClear.style.display = 'inline-block';
+                            if (sealSavedHint) sealSavedHint.style.display = 'inline';
+                        }
+                    } catch (e) {}
+                }
+                function hideSealSavedUI() {
+                    if (btnSealClear) btnSealClear.style.display = 'none';
+                    if (sealSavedHint) sealSavedHint.style.display = 'none';
+                }
+                applySavedSeal();
                 if (sealFile) {
                     sealFile.addEventListener('change', function() {
-                        window._quoteSealDataUrl = '';
                         var f = this.files && this.files[0];
-                        if (!f || !f.type.match(/^image\//)) return;
+                        if (!f || !f.type.match(/^image\//)) {
+                            window._quoteSealDataUrl = '';
+                            try { localStorage.removeItem(SEAL_STORAGE_KEY); } catch (e) {}
+                            hideSealSavedUI();
+                            return;
+                        }
                         var r = new FileReader();
-                        r.onload = function() { window._quoteSealDataUrl = r.result || ''; };
+                        r.onload = function() {
+                            var dataUrl = r.result || '';
+                            window._quoteSealDataUrl = dataUrl;
+                            try { localStorage.setItem(SEAL_STORAGE_KEY, dataUrl); } catch (e) {}
+                            if (btnSealClear) btnSealClear.style.display = 'inline-block';
+                            if (sealSavedHint) sealSavedHint.style.display = 'inline';
+                        };
                         r.readAsDataURL(f);
+                    });
+                }
+                if (btnSealClear) {
+                    btnSealClear.addEventListener('click', function() {
+                        window._quoteSealDataUrl = '';
+                        try { localStorage.removeItem(SEAL_STORAGE_KEY); } catch (e) {}
+                        if (sealFile) sealFile.value = '';
+                        hideSealSavedUI();
                     });
                 }
             })();
@@ -730,8 +819,22 @@
             let estimateItems = [];
             let nestDiscountOn = false;
             let nestDiscountRate = 10;
+            let nestDiscountByAmount = false;
+            let nestDiscountAmount = 0;
 
             policyServiceFee.textContent = fmt(serviceFee) + '원';
+
+            /** 총액 대비 둥지할인 금액과 표시용 라벨 반환 */
+            function getNestDiscount(totalBefore) {
+                if (!totalBefore || totalBefore <= 0) return { discountAmount: 0, label: '0%' };
+                if (nestDiscountByAmount) {
+                    const amt = Math.max(0, Math.min(totalBefore, Math.round(Number(nestDiscountAmount) || 0)));
+                    return { discountAmount: amt, label: fmt(amt) + '원' };
+                }
+                const rate = Math.min(100, Math.max(0, Number(nestDiscountRate) || 0)) / 100;
+                const amt = Math.round(totalBefore * rate);
+                return { discountAmount: amt, label: Math.round(rate * 100) + '%' };
+            }
 
             function getItemTotal(item) {
                 const mat = item.material && item.material.general != null ? item.material.general : 0;
@@ -754,8 +857,8 @@
                     return;
                 }
                 if (nestDiscountOn && totalBefore > 0) {
-                    const rate = Math.min(100, Math.max(0, Number(nestDiscountRate) || 0)) / 100;
-                    const totalAfter = Math.round(totalBefore * (1 - rate));
+                    const disc = getNestDiscount(totalBefore);
+                    const totalAfter = totalBefore - disc.discountAmount;
                     policyTotal.innerHTML = '<span class="total-original">' + fmt(totalBefore) + '원</span><span class="total-final">' + fmt(totalAfter) + '원</span> (VAT 별도)';
                 } else {
                     policyTotal.textContent = estimateItems.length === 0 ? '① + ② (VAT 별도)' : fmt(totalBefore) + '원 (VAT 별도)';
@@ -834,15 +937,13 @@
                     policyEstimateList.appendChild(row);
                 });
                 if (nestDiscountOn) {
-                    var rate = Math.min(100, Math.max(0, Number(nestDiscountRate) || 0)) / 100;
                     var sum = estimateItems.reduce(function(acc, e) { return acc + e.total; }, 0);
                     var totalBefore = serviceFee + sum;
-                    if (totalBefore > 0 && rate > 0) {
-                        var discount = Math.round(totalBefore * rate);
-                        var ratePct = Math.round(rate * 100);
+                    var disc = getNestDiscount(totalBefore);
+                    if (totalBefore > 0 && disc.discountAmount > 0) {
                         var discountRow = document.createElement('div');
                         discountRow.className = 'policy-estimate-item policy-estimate-item-readonly';
-                        discountRow.innerHTML = '<span class="policy-estimate-item-name">둥지 할인 ' + ratePct + '%</span><span class="policy-estimate-item-total">-' + fmt(discount) + '원</span>';
+                        discountRow.innerHTML = '<span class="policy-estimate-item-name">둥지 할인 ' + disc.label + '</span><span class="policy-estimate-item-total">-' + fmt(disc.discountAmount) + '원</span>';
                         policyEstimateList.appendChild(discountRow);
                     }
                 }
@@ -889,6 +990,40 @@
                     if (nestDiscountOn) renderPolicyEstimate();
                 });
             }
+            const btnNestModePct = document.getElementById('btnNestModePct');
+            const btnNestModeWon = document.getElementById('btnNestModeWon');
+            const nestInputPctWrap = document.getElementById('nestInputPctWrap');
+            const nestInputWonWrap = document.getElementById('nestInputWonWrap');
+            const nestDiscountAmountEl = document.getElementById('nestDiscountAmount');
+            if (btnNestModePct && btnNestModeWon && nestInputPctWrap && nestInputWonWrap) {
+                btnNestModePct.addEventListener('click', () => {
+                    nestDiscountByAmount = false;
+                    btnNestModePct.classList.add('active'); btnNestModePct.setAttribute('aria-pressed', 'true');
+                    btnNestModeWon.classList.remove('active'); btnNestModeWon.setAttribute('aria-pressed', 'false');
+                    nestInputPctWrap.classList.remove('hide'); nestInputWonWrap.classList.add('hide');
+                    if (nestDiscountOn) renderPolicyEstimate();
+                });
+                btnNestModeWon.addEventListener('click', () => {
+                    nestDiscountByAmount = true;
+                    btnNestModeWon.classList.add('active'); btnNestModeWon.setAttribute('aria-pressed', 'true');
+                    btnNestModePct.classList.remove('active'); btnNestModePct.setAttribute('aria-pressed', 'false');
+                    nestInputWonWrap.classList.remove('hide'); nestInputPctWrap.classList.add('hide');
+                    if (nestDiscountOn) renderPolicyEstimate();
+                });
+            }
+            if (nestDiscountAmountEl) {
+                nestDiscountAmountEl.addEventListener('input', () => {
+                    var v = parseInt(nestDiscountAmountEl.value.replace(/,/g, ''), 10);
+                    nestDiscountAmount = isNaN(v) ? 0 : Math.max(0, v);
+                    if (nestDiscountOn) renderPolicyEstimate();
+                });
+                nestDiscountAmountEl.addEventListener('change', () => {
+                    var v = parseInt(nestDiscountAmountEl.value.replace(/,/g, ''), 10);
+                    nestDiscountAmount = isNaN(v) ? 0 : Math.max(0, v);
+                    nestDiscountAmountEl.value = nestDiscountAmount;
+                    if (nestDiscountOn) renderPolicyEstimate();
+                });
+            }
 
             function escapeHtml(s) {
                 if (s == null) return '';
@@ -922,14 +1057,14 @@
                     fax: (document.getElementById('supplierFax') && document.getElementById('supplierFax').value) || '',
                     manager: (document.getElementById('supplierManager') && document.getElementById('supplierManager').value) || '',
                     contact: (document.getElementById('supplierContact') && document.getElementById('supplierContact').value) || '',
-                    sealDataUrl: (typeof window._quoteSealDataUrl !== 'undefined' && window._quoteSealDataUrl) || ''
+                    sealDataUrl: (typeof window._quoteSealDataUrl !== 'undefined' && window._quoteSealDataUrl) || 'seal-default.png'
                 };
 
                 const sumItems = estimateItems.reduce((acc, e) => acc + e.total, 0);
                 const totalBefore = serviceFee + sumItems;
-                const ratePercent = Math.min(100, Math.max(0, Number(nestDiscountRate) || 0));
-                const rate = nestDiscountOn ? ratePercent / 100 : 0;
-                const discountAmount = rate > 0 ? Math.round(totalBefore * rate) : 0;
+                const disc = getNestDiscount(totalBefore);
+                const discountAmount = nestDiscountOn ? disc.discountAmount : 0;
+                const discountLabel = nestDiscountOn ? disc.label : '0%';
                 const totalExclVat = totalBefore - discountAmount;
                 const totalInclVat = Math.round(totalExclVat * 1.1);
 
@@ -979,8 +1114,11 @@
                 var tdFooterRight = 'border:1px solid ' + borderColor + ';padding:4px 8px;font-size:10px;background:' + footerBgGray + ';text-align:right;font-weight:700;' + pdfCss;
                 var tdFooterNote = 'border:1px solid ' + borderColor + ';padding:4px 8px;font-size:10px;background:' + footerBgGray + ';' + pdfCss;
 
-                var sealHtml = (supplier.sealDataUrl && supplier.sealDataUrl.indexOf('data:') === 0)
-                    ? '<img src="' + supplier.sealDataUrl.replace(/"/g, '&quot;') + '" alt="인" style="width:36px;height:36px;display:inline-block;vertical-align:middle;">'
+                var sealImgSrc = (supplier.sealDataUrl && supplier.sealDataUrl.indexOf('data:') === 0)
+                    ? supplier.sealDataUrl.replace(/"/g, '&quot;')
+                    : (supplier.sealDataUrl === 'seal-default.png' ? 'seal-default.png' : '');
+                var sealHtml = sealImgSrc
+                    ? '<img src="' + sealImgSrc + '" alt="인" style="width:36px;height:36px;display:inline-block;vertical-align:middle;object-fit:contain;">'
                     : '<span style="display:inline-block;width:36px;height:36px;border:1px solid #555;border-radius:50%;margin-left:6px;" title="도장"></span><span style="margin-left:4px;">(인)</span>';
 
                 var receiverDisplay = (receiver || '').trim().indexOf('귀하') !== -1 ? (receiver || '') : ((receiver || '').trim() ? (receiver || '').trim() + ' 귀하' : '');
@@ -1066,7 +1204,7 @@
 
                 html += '<tr>'
                     + '<td style="' + tdFooterLabel + '"></td>'
-                    + '<td style="' + tdFooterLabel + '">둥지할인(' + ratePercent + '%)</td>'
+                    + '<td style="' + tdFooterLabel + '">둥지할인(' + discountLabel + ')</td>'
                     + '<td style="' + tdFooterLabel + '"></td>'
                     + '<td style="' + tdFooterLabel + '"></td>'
                     + '<td style="' + tdFooterLabel + '"></td>'
@@ -1093,51 +1231,64 @@
 
                 var el = document.getElementById('pdfTemplate');
                 var wrap = document.getElementById('pdfWrap');
+                function hidePdfPreview() {
+                    if (wrap) {
+                        wrap.style.display = 'none';
+                        wrap.style.position = 'absolute';
+                        wrap.style.left = '-9999px';
+                        wrap.style.top = '';
+                        wrap.style.width = '';
+                        wrap.style.height = '';
+                        wrap.style.maxWidth = '';
+                        wrap.style.margin = '';
+                        wrap.style.background = '';
+                        wrap.style.zIndex = '';
+                        wrap.style.overflow = '';
+                        wrap.style.flexDirection = '';
+                    }
+                }
                 if (el) {
                     el.innerHTML = html;
                     document.getElementById('quoteInfoModal').classList.remove('is-open');
                     if (wrap) {
-                        wrap.style.display = 'block';
+                        wrap.style.display = 'flex';
+                        wrap.style.flexDirection = 'column';
                         wrap.style.position = 'fixed';
                         wrap.style.left = '0';
                         wrap.style.top = '0';
-                        wrap.style.width = '210mm';
-                        wrap.style.maxWidth = '100%';
-                        wrap.style.margin = '0 auto';
+                        wrap.style.width = '100%';
+                        wrap.style.height = '100%';
+                        wrap.style.margin = '0';
                         wrap.style.background = '#fff';
                         wrap.style.zIndex = '10000';
-                        wrap.style.overflow = 'visible';
+                        wrap.style.overflow = 'hidden';
                         wrap.style.boxSizing = 'border-box';
                     }
+                    var btnPdfClose = document.getElementById('btnPdfClose');
+                    var btnPdfDownload = document.getElementById('btnPdfDownload');
+                    if (btnPdfClose) btnPdfClose.onclick = hidePdfPreview;
+                    var pdfOpt = {
+                        margin: [8, 8, 8, 8],
+                        filename: '견적서.pdf',
+                        image: { type: 'jpeg', quality: 1 },
+                        html2canvas: { scale: 2, useCORS: true },
+                        jsPDF: { unit: 'mm', format: 'a4', hotfixes: ['px_scaling'] },
+                        pagebreak: { mode: ['avoid-all', 'css', 'legacy'], before: '.pdf-page-break' }
+                    };
+                    function doPdfSave() {
+                        if (typeof html2pdf !== 'undefined') {
+                            html2pdf().set(pdfOpt).from(el).save().then(hidePdfPreview);
+                        } else {
+                            window.print();
+                            hidePdfPreview();
+                        }
+                    }
+                    if (btnPdfDownload) btnPdfDownload.onclick = doPdfSave;
                     if (typeof html2pdf !== 'undefined') {
-                        html2pdf().set({
-                            margin: [8, 8, 8, 8],
-                            filename: '견적서.pdf',
-                            image: { type: 'jpeg', quality: 1 },
-                            html2canvas: { scale: 2, useCORS: true },
-                            jsPDF: { unit: 'mm', format: 'a4', hotfixes: ['px_scaling'] },
-                            pagebreak: { mode: ['avoid-all', 'css', 'legacy'], before: '.pdf-page-break' }
-                        }).from(el).save().then(function() {
-                            if (wrap) {
-                                wrap.style.display = 'none';
-                                wrap.style.position = 'absolute';
-                                wrap.style.left = '-9999px';
-                                wrap.style.top = '';
-                                wrap.style.width = '';
-                                wrap.style.maxWidth = '';
-                                wrap.style.margin = '';
-                                wrap.style.background = '';
-                                wrap.style.zIndex = '';
-                                wrap.style.overflow = '';
-                            }
-                        });
+                        doPdfSave();
                     } else {
                         window.print();
-                        if (wrap) {
-                            wrap.style.display = 'none';
-                            wrap.style.position = 'absolute';
-                            wrap.style.left = '-9999px';
-                        }
+                        hidePdfPreview();
                     }
                 }
             }
