@@ -1206,7 +1206,7 @@
                 html += '<div style="display:flex;align-items:stretch;gap:12px;margin-bottom:6px;">';
                 html += '<table style="' + topBlockStyle + ' width:48%;"><tr><td style="' + leftTdWrap + '"><span style="font-size:12px;font-weight:700;">' + escapeHtml(receiverDisplay) + '</span><span style="' + leftLineStyle + '"></span></td></tr>';
                 var dateLine = '견적일자 : ' + (quoteDateDot || '');
-                var finalLine = '최종 견적액 : ' + fmt(totalExclVat) + '원';
+                var finalLine = '최종 견적액 : ' + fmt(totalExclVat) + '원 (VAT별도)';
                 var validLine = '견적유효일 : 작성일로부터 30일 이내';
                 html += '<tr><td style="' + leftTdWrap + ';text-align:left;">' + dateLine + '<span style="' + leftLineStyle + '"></span></td></tr>';
                 html += '<tr><td style="' + leftTdWrap + ';text-align:left;">' + finalLine + '<span style="' + leftLineStyle + '"></span></td></tr>';
