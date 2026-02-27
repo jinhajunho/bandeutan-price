@@ -1,0 +1,1495 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>반듯한시공 단가표</title>
+    <!-- Remix Icon -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <!-- Pretendard Font -->
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard.css" />
+    <style>
+        :root {
+            --primary: #0f172a;    
+            --accent: #2563eb;     
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-dark: #0f172a;
+            --text-grey: #64748b;
+            --border: #e2e8f0;
+        }
+        
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            padding: 0;
+            color: var(--text-dark);
+            -webkit-tap-highlight-color: transparent;
+            padding-bottom: 80px;
+        }
+
+        .header {
+            background: var(--card-bg);
+            padding: 20px 20px 10px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+        }
+        .brand-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        .logo-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo-icon {
+            background: var(--primary);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .logo-img {
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
+            display: block;
+        }
+        .brand-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            letter-spacing: -0.5px;
+        }
+
+        .policy-card {
+            margin: 20px;
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            border: 1px solid rgba(37, 99, 235, 0.1);
+        }
+        .policy-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .policy-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+        .policy-label { color: var(--text-grey); }
+        .policy-value { font-weight: 700; color: var(--text-dark); }
+        .policy-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 10px 0;
+        }
+        .policy-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--accent);
+            font-weight: 800;
+            font-size: 1rem;
+        }
+        .highlight-price {
+            color: #ef4444; /* Red for emphasis */
+            font-size: 1.1rem;
+        }
+
+        .search-container {
+            padding: 0 20px 10px;
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+        }
+        .search-box {
+            background: #f1f5f9;
+            border-radius: 12px;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .search-input {
+            border: none;
+            background: transparent;
+            width: 100%;
+            font-size: 1rem;
+            outline: none;
+            color: var(--text-dark);
+        }
+        
+        .filters {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 16px 20px;
+            scrollbar-width: none;
+        }
+        .filters::-webkit-scrollbar { display: none; }
+        
+        .chip {
+            padding: 8px 14px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--text-grey);
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+        .chip.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            font-weight: 600;
+        }
+
+        .list-container {
+            padding: 0 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .item-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .item-left { flex: 1; padding-right: 15px; }
+        .item-cat {
+            font-size: 0.75rem;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 4px;
+            display: block;
+        }
+        .item-title {
+            font-size: 1rem;
+            font-weight: 600;
+            line-height: 1.4;
+            color: var(--text-dark);
+        }
+        .item-right { text-align: right; }
+        .item-price {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+        .item-unit {
+            font-size: 0.75rem;
+            color: var(--text-grey);
+            display: block;
+            margin-top: 2px;
+        }
+
+        /* zibgo 3-panel + 견적 */
+        .app { display: flex; gap: 0; min-height: 280px; max-width: 100%; overflow: hidden; border-radius: 12px; border: 1px solid var(--border); background: var(--card-bg); margin: 0 20px 20px; }
+        .panel { flex: 0 0 auto; overflow-y: auto; border-right: 1px solid var(--border); }
+        .panel:last-child { border-right: none; }
+        .panel-cats { width: 140px; }
+        .panel-groups { width: 160px; }
+        .panel-items { flex: 1; min-width: 200px; padding: 12px; }
+        .nav-list { list-style: none; margin: 0; padding: 8px 0; }
+        .nav-list li { margin: 0; }
+        .nav-btn { display: block; width: 100%; padding: 10px 12px; text-align: left; border: none; background: transparent; font-size: 0.9rem; color: var(--text-dark); cursor: pointer; font-family: inherit; }
+        .nav-btn:hover { background: #f1f5f9; }
+        .nav-btn.active { background: rgba(37, 99, 235, 0.1); color: var(--accent); font-weight: 600; }
+        .item-section { margin-bottom: 16px; }
+        .item-section-title { font-size: 0.8rem; font-weight: 700; color: var(--accent); margin-bottom: 8px; padding: 0 4px; }
+        .item-row { background: #f8fafc; border-radius: 10px; padding: 12px; margin-bottom: 8px; border: 1px solid var(--border); }
+        .item-row .item-name { font-weight: 600; font-size: 0.95rem; margin-bottom: 6px; }
+        .item-meta { font-size: 0.8rem; color: var(--text-grey); margin-bottom: 6px; }
+        .item-note { font-size: 0.8rem; color: #64748b; margin-top: 4px; }
+        .price-stack { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 8px; }
+        .price-stack span { font-weight: 700; color: var(--text-dark); }
+        .price-stack .price-with-extra { color: var(--accent); font-size: 0.9em; }
+        .price-stack .btn-group-add { display: flex; flex-wrap: wrap; gap: 6px; }
+        .btn-add-estimate { margin-top: 4px; padding: 6px 12px; font-size: 0.85rem; background: var(--accent); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; }
+        .btn-add-estimate:hover { background: #1d4ed8; }
+        .btn-add-estimate.btn-add-with-extra { background: #0f172a; }
+        .btn-add-estimate.btn-add-with-extra:hover { background: #1e293b; }
+        .btn-add-estimate.btn-add-material { background: #64748b; }
+        .btn-add-estimate.btn-add-material:hover { background: #475569; }
+        .policy-estimate-list { max-height: 120px; overflow-y: auto; margin: 8px 0; }
+        .policy-estimate-item { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 6px 0; font-size: 0.85rem; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+        .policy-estimate-item .policy-item-name { flex: 1 1 140px; min-width: 0; padding: 4px 8px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.85rem; font-family: inherit; }
+        .policy-estimate-item .policy-item-unit,
+        .policy-estimate-item .policy-item-qty,
+        .policy-estimate-item .policy-item-unitprice {
+            width: 60px;
+            padding: 4px 6px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-family: inherit;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        .policy-estimate-item .policy-item-qty,
+        .policy-estimate-item .policy-item-unitprice {
+            text-align: right;
+        }
+        .policy-estimate-item .policy-item-total { width: 90px; padding: 4px 8px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.85rem; font-family: inherit; text-align: right; }
+        .policy-estimate-item .policy-item-name:focus,
+        .policy-estimate-item .policy-item-total:focus,
+        .policy-estimate-item .policy-item-unit:focus,
+        .policy-estimate-item .policy-item-qty:focus,
+        .policy-estimate-item .policy-item-unitprice:focus { outline: none; border-color: var(--accent); }
+        .policy-estimate-item .remove-btn { background: none; border: none; color: #94a3b8; cursor: pointer; padding: 0 4px; font-size: 1.1rem; flex-shrink: 0; }
+        .policy-estimate-item .remove-btn:hover { color: #ef4444; }
+        .policy-estimate-item .order-btn-group { display: flex; flex-direction: column; gap: 2px; flex-shrink: 0; }
+        .policy-estimate-item .btn-order { width: 24px; height: 20px; padding: 0; border: 1px solid #8fbc8f; border-radius: 4px; background: #c5e0b4; color: #000; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+        .policy-estimate-item .btn-order:hover:not(:disabled) { background: #a8d08d; }
+        .policy-estimate-item .btn-order:disabled { opacity: 0.4; cursor: not-allowed; }
+        .policy-estimate-item-readonly { pointer-events: none; }
+        .policy-estimate-item-readonly .policy-estimate-item-name,
+        .policy-estimate-item-readonly .policy-estimate-item-total { border: none; background: transparent; padding: 4px 0; }
+        .policy-estimate-item-readonly .policy-estimate-item-total { color: #0ea5e9; font-weight: 700; }
+        .policy-estimate-list-modal .policy-estimate-item { border-bottom: 1px solid var(--border); padding: 6px 0; font-size: 0.85rem; display: flex; justify-content: space-between; align-items: center; }
+        .policy-estimate-list-modal .policy-estimate-item .item-name { flex: 1; }
+        .policy-estimate-list-modal .policy-estimate-item .item-total { font-weight: 700; }
+        .policy-estimate-add-row {
+            margin-top: 8px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .policy-estimate-add-row .btn-add-row { flex: 1; min-width: 0; }
+        .btn-add-row {
+            padding: 8px 12px;
+            background: #f1f5f9;
+            border: 1px dashed var(--border);
+            border-radius: 8px;
+            color: var(--text-grey);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .btn-add-row:hover { background: #e2e8f0; color: var(--accent); border-color: var(--accent); }
+        .btn-nest-discount {
+            padding: 8px 12px;
+            background: #f1f5f9;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-grey);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+        .btn-nest-discount:hover { background: #e2e8f0; color: var(--text-dark); }
+        .btn-nest-discount.active { background: var(--accent); color: white; border-color: var(--accent); }
+        .btn-nest-discount.active:hover { background: #1d4ed8; }
+        .nest-discount-wrap { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+        .nest-discount-rate {
+            width: 48px;
+            padding: 6px 8px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-family: inherit;
+            text-align: center;
+        }
+        .nest-discount-rate:focus { outline: none; border-color: var(--accent); }
+        .nest-discount-wrap .pct { color: var(--text-grey); font-size: 0.85rem; font-weight: 600; }
+        .nest-discount-mode { display: inline-flex; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+        .nest-discount-mode .btn-mode { border: none; padding: 4px 8px; font-size: 0.8rem; background: #f1f5f9; color: var(--text-grey); cursor: pointer; }
+        .nest-discount-mode .btn-mode:hover { background: #e2e8f0; }
+        .nest-discount-mode .btn-mode.active { background: var(--accent); color: white; font-weight: 600; }
+        .nest-discount-input-won.hide { display: none; }
+        .nest-discount-input-pct.hide { display: none; }
+        #nestDiscountAmount { width: 72px; }
+        .seal-controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .btn-seal-clear { font-size: 0.8rem; color: var(--text-grey); background: none; border: 1px solid var(--border); border-radius: 6px; padding: 4px 8px; cursor: pointer; }
+        .btn-seal-clear:hover { background: #f1f5f9; color: var(--text-dark); }
+        .seal-saved-hint { font-size: 0.8rem; color: var(--text-grey); margin-top: 4px; display: block; }
+        .seal-default-hint { display: block; font-size: 0.75rem; color: var(--text-grey); margin-top: 2px; }
+        #policyServiceFee { font-weight: 700; }
+        .policy-total #policyTotal { font-weight: 800; color: var(--accent); }
+        .policy-total .total-original { text-decoration: line-through; font-size: 0.8em; font-weight: 600; color: var(--text-grey); margin-right: 6px; }
+        .policy-total .total-final { font-weight: 800; color: var(--accent); font-size: 1.05em; }
+
+        /* 견적서 작성 버튼 */
+        .btn-quote-open {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-quote-open:hover { background: #1d4ed8; }
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.4);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .modal-overlay.is-open { display: flex; }
+        .modal-box {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 420px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+        }
+        .modal-box.modal-box-quote { max-width: 560px; max-height: 90vh; overflow-y: auto; }
+        .modal-box .policy-card {
+            margin: 20px 0 0;
+            padding: 16px;
+        }
+        .modal-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .form-group { margin-bottom: 16px; }
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+        .form-group textarea { min-height: 80px; resize: vertical; }
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+        }
+        .form-section { margin-bottom: 20px; }
+        .form-section-title { font-size: 0.8rem; font-weight: 700; color: var(--text-grey); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-section-highlight { background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%); border: 1px solid rgba(37, 99, 235, 0.2); border-radius: 12px; padding: 14px; margin-bottom: 16px; }
+        .form-section-highlight .form-section-title { color: var(--accent); }
+        .form-section-highlight .form-group { margin-bottom: 12px; }
+        .form-section-highlight .form-group:last-child { margin-bottom: 0; }
+        .form-section-highlight textarea { min-height: 100px; }
+        .input-with-suffix { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+        .input-with-suffix input { flex: 1; min-width: 0; }
+        .input-suffix { color: var(--text-grey); font-weight: 600; white-space: nowrap; }
+        .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+        .modal-actions button {
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .modal-actions .btn-close {
+            background: #f1f5f9;
+            color: var(--text-dark);
+            border: none;
+        }
+        .modal-actions .btn-close:hover { background: #e2e8f0; }
+        .modal-actions .btn-save {
+            background: var(--accent);
+            color: white;
+            border: none;
+        }
+        .modal-actions .btn-save:hover { background: #1d4ed8; }
+        .modal-edit-hint { margin-top: 12px; padding: 10px; background: #f8fafc; border-radius: 8px; font-size: 0.8rem; color: var(--text-grey); line-height: 1.4; }
+
+        /* PDF 출력 영역 (화면에서는 숨김) */
+        .pdf-wrap { display: none; position: absolute; left: -9999px; }
+        .pdf-preview-toolbar {
+            position: sticky; top: 0; left: 0; right: 0; z-index: 10001;
+            display: flex; align-items: center; justify-content: center; gap: 12px;
+            padding: 12px 16px; background: #1e293b; color: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .btn-pdf-close, .btn-pdf-download {
+            padding: 8px 16px; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer;
+        }
+        .btn-pdf-close { background: #64748b; color: #fff; }
+        .btn-pdf-close:hover { background: #475569; }
+        .btn-pdf-download { background: var(--accent); color: #fff; }
+        .btn-pdf-download:hover { background: #1d4ed8; }
+        .pdf-preview-body { padding: 16px; overflow-y: auto; max-height: calc(100vh - 56px); }
+        @media print {
+            .pdf-preview-toolbar { display: none !important; }
+            body * { visibility: hidden; }
+            .pdf-wrap, .pdf-wrap * { visibility: visible; }
+            .pdf-wrap { display: block !important; position: static; left: 0; }
+            #pdfTemplate { max-width: 210mm; margin: 0 auto; }
+        }
+
+    </style>
+    <style id="pdfTemplateStyles">
+        /* #pdfTemplate 내부 테이블용 (인라인으로 삽입해도 됨) */
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="brand-row">
+            <div class="logo-box">
+                <img src="logo.png" alt="로고" class="logo-img" onerror="this.style.display='none'; var next=this.nextElementSibling; if(next){ next.style.display='flex'; }">
+                <div class="logo-icon" style="display:none;"><i class="ri-hammer-fill"></i></div>
+                <div class="brand-title">반듯한시공</div>
+            </div>
+            <button type="button" class="btn-quote-open" id="btnQuoteOpen">
+                <i class="ri-file-text-line"></i>
+                견적서 작성
+            </button>
+        </div>
+        
+        <div class="search-box">
+            <i class="ri-search-2-line" style="color:#94a3b8"></i>
+            <input type="text" id="searchInput" class="search-input" placeholder="품목 검색 (예: 수전, 도어락)">
+        </div>
+    </div>
+
+    <!-- 견적서 작성 모달 (기본 정보 + 표준 견적 산출 ~ 최종 견적가) -->
+    <div class="modal-overlay" id="quoteInfoModal">
+        <div class="modal-box modal-box-quote">
+            <div class="modal-title">
+                <i class="ri-file-text-line" style="color:var(--accent)"></i>
+                견적서 작성
+            </div>
+            <form id="quoteInfoForm">
+                <div class="form-section form-section-highlight">
+                    <div class="form-section-title">자주 수정하는 필수 항목</div>
+                    <div class="form-group">
+                        <label for="quoteReceiver">수신자 (귀하 고정)</label>
+                        <span class="input-with-suffix">
+                            <input type="text" id="quoteReceiver" placeholder="예: 유성빌딩">
+                            <span class="input-suffix">귀하</span>
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        <label for="quoteWorkDesc">공사 내용</label>
+                        <input type="text" id="quoteWorkDesc" placeholder="예: 조명전등, 스위치 점검 및 교체">
+                    </div>
+                    <div class="form-group">
+                        <label for="quoteNote">특이사항</label>
+                        <textarea id="quoteNote">작업방법:
+1. 일 정: 상호간 조율
+2. 범 위: 내역서에 준함
+3. 부가가치세 별도
+4. 견적 외 사항은 상호 조율 후 진행</textarea>
+                    </div>
+                </div>
+                <div class="form-section">
+                    <div class="form-section-title">기본 정보</div>
+                    <div class="form-row-2">
+                        <div class="form-group">
+                            <label for="quoteDate">견적일자</label>
+                            <input type="date" id="quoteDate">
+                        </div>
+                        <div class="form-group">
+                            <label for="quoteValidDays">유효일</label>
+                            <input type="text" id="quoteValidDays" placeholder="작성일로부터 30일" value="작성일로부터 30일">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-section">
+                    <div class="form-section-title">공급자 정보</div>
+                    <div class="form-row-2">
+                        <div class="form-group">
+                            <label for="supplierRegNo">등록번호</label>
+                            <input type="text" id="supplierRegNo" value="866-87-03086">
+                        </div>
+                        <div class="form-group">
+                            <label for="supplierName">상호</label>
+                            <input type="text" id="supplierName" value="(주)반듯한시공">
+                        </div>
+                    </div>
+                    <div class="form-row-2">
+                        <div class="form-group">
+                            <label for="supplierRep">대표자</label>
+                            <input type="text" id="supplierRep" value="신순일">
+                        </div>
+                        <div class="form-group">
+                            <label for="supplierSealFile">도장 이미지 (선택)</label>
+                            <span class="seal-default-hint">같은 폴더에 seal-default.png를 두면 업로드 없이 모든 기기에서 사용됩니다.</span>
+                            <span class="seal-controls">
+                                <input type="file" id="supplierSealFile" accept="image/*" style="font-size:0.85rem;">
+                                <button type="button" class="btn-seal-clear" id="btnSealClear" title="저장된 기본 도장 삭제" style="display:none;">저장된 도장 삭제</button>
+                            </span>
+                            <span class="seal-saved-hint" id="sealSavedHint" style="display:none;">※ 기본 도장이 저장되어 있습니다.</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="supplierAddr">사업장 주소</label>
+                        <input type="text" id="supplierAddr" value="서울특별시 송파구 송이로 162, 3층(가락동)">
+                    </div>
+                    <div class="form-row-2">
+                        <div class="form-group">
+                            <label for="supplierType">업태</label>
+                            <input type="text" id="supplierType" value="건설업, 서비스업, 부동산">
+                        </div>
+                        <div class="form-group">
+                            <label for="supplierCategory">종목</label>
+                            <input type="text" id="supplierCategory" value="인테리어 시공업, 시설관리 등">
+                        </div>
+                    </div>
+                    <div class="form-row-2">
+                        <div class="form-group">
+                            <label for="supplierPhone">전화</label>
+                            <input type="text" id="supplierPhone" value="1577-9489">
+                        </div>
+                        <div class="form-group">
+                            <label for="supplierFax">팩스</label>
+                            <input type="text" id="supplierFax" value="02-565-9489">
+                        </div>
+                    </div>
+                    <div class="form-row-2">
+                        <div class="form-group">
+                            <label for="supplierManager">담당자</label>
+                            <input type="text" id="supplierManager" value="길현룡">
+                        </div>
+                        <div class="form-group">
+                            <label for="supplierContact">연락처</label>
+                            <input type="text" id="supplierContact" value="010-3932-2367">
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="policy-card">
+                <div class="policy-title">
+                    <i class="ri-file-list-3-line" style="color:var(--accent)"></i>
+                    표준 견적 산출 (2025)
+                </div>
+                <div class="policy-row">
+                    <span class="policy-label">① 기본 출장비 (1회)</span>
+                    <span class="policy-value highlight-price" id="policyServiceFeeModal">-</span>
+                </div>
+                <div class="policy-row">
+                    <span class="policy-label">② 시공비 (기술료+자재)</span>
+                    <span class="policy-value">선택 품목 합계</span>
+                </div>
+                <div class="policy-estimate-list policy-estimate-list-modal" id="policyEstimateListModal"></div>
+                <div class="policy-divider"></div>
+                <div class="policy-total">
+                    <span>최종 견적가</span>
+                    <span id="policyTotalModal">① + ② (VAT 별도)</span>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn-close" id="btnQuoteModalClose">닫기</button>
+                <button type="button" class="btn-save" id="btnQuoteFormSave">저장</button>
+                <button type="button" class="btn-save" id="btnGeneratePDF">PDF 생성</button>
+            </div>
+            <p class="modal-edit-hint">💡 견적서 모양을 직접 수정하려면 이 HTML 파일을 Cursor 등 에디터로 열고, <strong>generatePDF</strong> 로 검색한 뒤 해당 함수 안의 테이블/스타일을 편집하세요.</p>
+        </div>
+    </div>
+
+    <!-- PDF 출력용 (미리보기 + 다운로드/닫기 버튼) -->
+    <div id="pdfWrap" class="pdf-wrap">
+        <div class="pdf-preview-toolbar" id="pdfPreviewToolbar">
+            <button type="button" class="btn-pdf-close" id="btnPdfClose">닫기</button>
+            <button type="button" class="btn-pdf-download" id="btnPdfDownload">PDF 다운로드</button>
+        </div>
+        <div id="pdfTemplate" class="pdf-preview-body"></div>
+    </div>
+
+    <!-- 표준 견적 산출 (메인 페이지) -->
+    <div class="policy-card">
+        <div class="policy-title">
+            <i class="ri-file-list-3-line" style="color:var(--accent)"></i>
+            표준 견적 산출 (2025)
+        </div>
+        <div class="policy-row">
+            <span class="policy-label">① 기본 출장비 (1회)</span>
+            <span class="policy-value highlight-price" id="policyServiceFee">-</span>
+        </div>
+        <div class="policy-row">
+            <span class="policy-label">② 시공비 (기술료+자재)</span>
+            <span class="policy-value">선택 품목 합계</span>
+        </div>
+        <div class="policy-estimate-list" id="policyEstimateList"></div>
+        <div class="policy-estimate-add-row">
+            <button type="button" class="btn-add-row" id="btnAddEstimateRow"><i class="ri-add-line"></i> 행 추가</button>
+            <span class="nest-discount-wrap">
+                <button type="button" class="btn-nest-discount" id="btnNestDiscount" aria-pressed="false">둥지 할인</button>
+                <span class="nest-discount-mode">
+                    <button type="button" class="btn-mode btn-mode-pct active" id="btnNestModePct" aria-pressed="true">%</button>
+                    <button type="button" class="btn-mode btn-mode-won" id="btnNestModeWon" aria-pressed="false">원</button>
+                </span>
+                <span class="nest-discount-input-pct" id="nestInputPctWrap">
+                    <input type="number" id="nestDiscountRate" class="nest-discount-rate" min="0" max="100" value="10" aria-label="할인율">
+                    <span class="pct">%</span>
+                </span>
+                <span class="nest-discount-input-won hide" id="nestInputWonWrap">
+                    <input type="number" id="nestDiscountAmount" class="nest-discount-rate" min="0" value="0" aria-label="할인 금액">
+                    <span class="pct">원</span>
+                </span>
+            </span>
+        </div>
+        <div class="policy-divider"></div>
+        <div class="policy-total">
+            <span>최종 견적가</span>
+            <span id="policyTotal">① + ② (VAT 별도)</span>
+        </div>
+    </div>
+
+    <div class="app">
+        <div class="panel panel-cats" id="panelCats">
+            <ul class="nav-list" id="navCats"></ul>
+        </div>
+        <div class="panel panel-groups" id="panelGroups">
+            <ul class="nav-list" id="navGroups"></ul>
+        </div>
+        <div class="panel panel-items" id="panelItems">
+            <div id="itemsPlaceholder">대분류 → 중분류 선택 시 항목이 표시됩니다.</div>
+            <div id="itemsList"></div>
+        </div>
+    </div>
+
+    <script src="zibgo-data.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script>
+        (function() {
+            // 견적서 작성 모달: 기본값(오늘 날짜) 및 열기/닫기
+            (function initQuoteModal() {
+                var modal = document.getElementById('quoteInfoModal');
+                var btnOpen = document.getElementById('btnQuoteOpen');
+                var btnClose = document.getElementById('btnQuoteModalClose');
+                var btnSave = document.getElementById('btnQuoteFormSave');
+                var quoteDate = document.getElementById('quoteDate');
+
+                function setToday() {
+                    var d = new Date();
+                    var y = d.getFullYear(), m = String(d.getMonth() + 1).padStart(2, '0'), day = String(d.getDate()).padStart(2, '0');
+                    quoteDate.value = y + '-' + m + '-' + day;
+                }
+                setToday();
+
+                function openModal() {
+                    setToday();
+                    function escapeHtml(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+                    var feeEl = document.getElementById('policyServiceFee');
+                    var listEl = document.getElementById('policyEstimateList');
+                    var totalEl = document.getElementById('policyTotal');
+                    var feeModal = document.getElementById('policyServiceFeeModal');
+                    var listModal = document.getElementById('policyEstimateListModal');
+                    var totalModal = document.getElementById('policyTotalModal');
+                    if (feeEl && feeModal) feeModal.textContent = feeEl.textContent;
+                    if (listEl && listModal) {
+                        listModal.innerHTML = '';
+                        var items = listEl.querySelectorAll('.policy-estimate-item');
+                        for (var i = 0; i < items.length; i++) {
+                            var row = items[i];
+                            var nameEl = row.querySelector('.policy-item-name');
+                            var totalInput = row.querySelector('.policy-item-total');
+                            var nameText, totalText;
+                            if (nameEl && totalInput) {
+                                nameText = nameEl.value;
+                                totalText = totalInput.value ? Number(totalInput.value).toLocaleString('ko-KR') + '원' : '0원';
+                            } else {
+                                nameText = (row.querySelector('.policy-estimate-item-name') || {}).textContent || '';
+                                totalText = (row.querySelector('.policy-estimate-item-total') || {}).textContent || '';
+                            }
+                            var readOnlyRow = document.createElement('div');
+                            readOnlyRow.className = 'policy-estimate-item';
+                            readOnlyRow.innerHTML = '<span class="item-name">' + escapeHtml(nameText) + '</span><span class="item-total">' + escapeHtml(totalText) + '</span>';
+                            listModal.appendChild(readOnlyRow);
+                        }
+                    }
+                    if (totalEl && totalModal) totalModal.innerHTML = totalEl.innerHTML;
+                    modal.classList.add('is-open');
+                }
+                function closeModal() { modal.classList.remove('is-open'); }
+
+                if (btnOpen) btnOpen.addEventListener('click', openModal);
+                if (btnClose) btnClose.addEventListener('click', closeModal);
+                if (btnSave) btnSave.addEventListener('click', closeModal);
+                if (modal) modal.addEventListener('click', function(e) { if (e.target === modal) closeModal(); });
+                var sealFile = document.getElementById('supplierSealFile');
+                var btnSealClear = document.getElementById('btnSealClear');
+                var sealSavedHint = document.getElementById('sealSavedHint');
+                var SEAL_STORAGE_KEY = 'bandeutan_seal_dataurl';
+                function applySavedSeal() {
+                    try {
+                        var saved = localStorage.getItem(SEAL_STORAGE_KEY);
+                        if (saved && saved.indexOf('data:') === 0) {
+                            window._quoteSealDataUrl = saved;
+                            if (btnSealClear) btnSealClear.style.display = 'inline-block';
+                            if (sealSavedHint) sealSavedHint.style.display = 'inline';
+                        }
+                    } catch (e) {}
+                }
+                function hideSealSavedUI() {
+                    if (btnSealClear) btnSealClear.style.display = 'none';
+                    if (sealSavedHint) sealSavedHint.style.display = 'none';
+                }
+                applySavedSeal();
+                if (sealFile) {
+                    sealFile.addEventListener('change', function() {
+                        var f = this.files && this.files[0];
+                        if (!f || !f.type.match(/^image\//)) {
+                            window._quoteSealDataUrl = '';
+                            try { localStorage.removeItem(SEAL_STORAGE_KEY); } catch (e) {}
+                            hideSealSavedUI();
+                            return;
+                        }
+                        var r = new FileReader();
+                        r.onload = function() {
+                            var dataUrl = r.result || '';
+                            window._quoteSealDataUrl = dataUrl;
+                            try { localStorage.setItem(SEAL_STORAGE_KEY, dataUrl); } catch (e) {}
+                            if (btnSealClear) btnSealClear.style.display = 'inline-block';
+                            if (sealSavedHint) sealSavedHint.style.display = 'inline';
+                        };
+                        r.readAsDataURL(f);
+                    });
+                }
+                if (btnSealClear) {
+                    btnSealClear.addEventListener('click', function() {
+                        window._quoteSealDataUrl = '';
+                        try { localStorage.removeItem(SEAL_STORAGE_KEY); } catch (e) {}
+                        if (sealFile) sealFile.value = '';
+                        hideSealSavedUI();
+                    });
+                }
+            })();
+
+            const DATA = window.ZIBGO_DATA;
+            if (!DATA || !DATA.categories || !DATA.categories.length) {
+                document.getElementById('panelCats').innerHTML = '<p style="padding:12px;color:#94a3b8">zibgo-data.js를 불러오지 못했습니다.</p>';
+                return;
+            }
+
+            const fmt = (n) => new Intl.NumberFormat('ko-KR').format(Number(n));
+            const serviceFee = DATA.serviceFee != null ? DATA.serviceFee : 0;
+            const categories = DATA.categories;
+
+            const navCats = document.getElementById('navCats');
+            const navGroups = document.getElementById('navGroups');
+            const itemsPlaceholder = document.getElementById('itemsPlaceholder');
+            const itemsList = document.getElementById('itemsList');
+            const searchInput = document.getElementById('searchInput');
+            const policyServiceFee = document.getElementById('policyServiceFee');
+            const policyEstimateList = document.getElementById('policyEstimateList');
+            const policyTotal = document.getElementById('policyTotal');
+
+            let selectedCatId = null;
+            let selectedGroupId = null;
+            let estimateItems = [];
+            let nestDiscountOn = false;
+            let nestDiscountRate = 10;
+            let nestDiscountByAmount = false;
+            let nestDiscountAmount = 0;
+
+            policyServiceFee.textContent = fmt(serviceFee) + '원';
+
+            /** 총액 대비 둥지할인 금액과 표시용 라벨 반환 */
+            function getNestDiscount(totalBefore) {
+                if (!totalBefore || totalBefore <= 0) return { discountAmount: 0, label: '0%' };
+                if (nestDiscountByAmount) {
+                    const amt = Math.max(0, Math.min(totalBefore, Math.round(Number(nestDiscountAmount) || 0)));
+                    return { discountAmount: amt, label: fmt(amt) + '원' };
+                }
+                const rate = Math.min(100, Math.max(0, Number(nestDiscountRate) || 0)) / 100;
+                const amt = Math.round(totalBefore * rate);
+                return { discountAmount: amt, label: Math.round(rate * 100) + '%' };
+            }
+
+            function getItemTotal(item) {
+                const mat = item.material && item.material.general != null ? item.material.general : 0;
+                return (item.installFee || 0) + mat;
+            }
+
+            /** 비고에서 "추가 시공비: 40,000원" 형태의 금액 파싱 (없으면 0) */
+            function parseExtraFee(note) {
+                if (!note || typeof note !== 'string') return 0;
+                const m = note.match(/추가\s*시공비\s*:\s*([0-9,]+)\s*원/);
+                if (!m) return 0;
+                return parseInt(m[1].replace(/,/g, ''), 10) || 0;
+            }
+
+            function updatePolicyTotal() {
+                const sum = estimateItems.reduce((acc, e) => acc + e.total, 0);
+                const totalBefore = serviceFee + sum;
+                if (estimateItems.length === 0 && !nestDiscountOn) {
+                    policyTotal.textContent = '① + ② (VAT 별도)';
+                    return;
+                }
+                if (nestDiscountOn && totalBefore > 0) {
+                    const disc = getNestDiscount(totalBefore);
+                    const totalAfter = totalBefore - disc.discountAmount;
+                    policyTotal.innerHTML = '<span class="total-original">' + fmt(totalBefore) + '원</span><span class="total-final">' + fmt(totalAfter) + '원</span> (VAT 별도)';
+                } else {
+                    policyTotal.textContent = estimateItems.length === 0 ? '① + ② (VAT 별도)' : fmt(totalBefore) + '원 (VAT 별도)';
+                }
+            }
+
+            function renderPolicyEstimate() {
+                policyEstimateList.innerHTML = '';
+                estimateItems.forEach((e, i) => {
+                    const row = document.createElement('div');
+                    row.className = 'policy-estimate-item';
+                    const orderBtnGroup = document.createElement('div');
+                    orderBtnGroup.className = 'order-btn-group';
+                    const btnUp = document.createElement('button');
+                    btnUp.type = 'button';
+                    btnUp.className = 'btn-order';
+                    btnUp.setAttribute('aria-label', '위로');
+                    btnUp.innerHTML = '<i class="ri-arrow-up-s-line" style="color:#000;font-size:14px;"></i>';
+                    btnUp.disabled = i === 0;
+                    btnUp.onclick = () => {
+                        if (i <= 0) return;
+                        const t = estimateItems[i];
+                        estimateItems[i] = estimateItems[i - 1];
+                        estimateItems[i - 1] = t;
+                        renderPolicyEstimate();
+                    };
+                    const btnDown = document.createElement('button');
+                    btnDown.type = 'button';
+                    btnDown.className = 'btn-order';
+                    btnDown.setAttribute('aria-label', '아래로');
+                    btnDown.innerHTML = '<i class="ri-arrow-down-s-line" style="color:#000;font-size:14px;"></i>';
+                    btnDown.disabled = i === estimateItems.length - 1;
+                    btnDown.onclick = () => {
+                        if (i >= estimateItems.length - 1) return;
+                        const t = estimateItems[i];
+                        estimateItems[i] = estimateItems[i + 1];
+                        estimateItems[i + 1] = t;
+                        renderPolicyEstimate();
+                    };
+                    orderBtnGroup.appendChild(btnUp);
+                    orderBtnGroup.appendChild(btnDown);
+                    const nameInput = document.createElement('input');
+                    nameInput.type = 'text';
+                    nameInput.className = 'policy-item-name';
+                    nameInput.value = e.name;
+                    nameInput.setAttribute('aria-label', '품목명');
+                    nameInput.addEventListener('input', () => { estimateItems[i].name = nameInput.value; });
+                    const unitInput = document.createElement('input');
+                    unitInput.type = 'text';
+                    unitInput.className = 'policy-item-unit';
+                    unitInput.value = e.unit || '';
+                    unitInput.placeholder = '단위';
+                    unitInput.setAttribute('aria-label', '단위');
+                    unitInput.addEventListener('input', () => { estimateItems[i].unit = unitInput.value; });
+                    const qtyInput = document.createElement('input');
+                    qtyInput.type = 'number';
+                    qtyInput.className = 'policy-item-qty';
+                    qtyInput.value = (e.qty !== undefined && e.qty !== null && e.qty !== '') ? e.qty : '';
+                    qtyInput.min = 0;
+                    qtyInput.step = 1;
+                    qtyInput.placeholder = '수량';
+                    qtyInput.setAttribute('aria-label', '수량');
+                    const totalInput = document.createElement('input');
+                    totalInput.type = 'number';
+                    totalInput.className = 'policy-item-total';
+                    totalInput.value = e.total;
+                    totalInput.min = 0;
+                    totalInput.step = 1;
+                    totalInput.setAttribute('aria-label', '금액');
+                    totalInput.addEventListener('input', () => {
+                        const v = parseInt(totalInput.value, 10);
+                        estimateItems[i].total = isNaN(v) ? 0 : Math.max(0, v);
+                        updatePolicyTotal();
+                    });
+                    const unitPriceInput = document.createElement('input');
+                    unitPriceInput.type = 'number';
+                    unitPriceInput.className = 'policy-item-unitprice';
+                    unitPriceInput.value = (e.unitPrice !== undefined && e.unitPrice !== null && e.unitPrice !== '') ? e.unitPrice : '';
+                    unitPriceInput.min = 0;
+                    unitPriceInput.step = 1;
+                    unitPriceInput.placeholder = '단가';
+                    unitPriceInput.setAttribute('aria-label', '단가');
+                    function recalcTotalFromUnit() {
+                        const qtyVal = parseFloat(qtyInput.value);
+                        const upVal = parseInt(unitPriceInput.value, 10);
+                        const qtyNum = isNaN(qtyVal) ? null : qtyVal;
+                        const upNum = isNaN(upVal) ? null : upVal;
+                        estimateItems[i].qty = qtyNum === null ? '' : qtyNum;
+                        estimateItems[i].unitPrice = upNum === null ? '' : upNum;
+                        if (qtyNum !== null && upNum !== null) {
+                            const newTotal = Math.round(qtyNum * upNum);
+                            estimateItems[i].total = newTotal;
+                            totalInput.value = newTotal;
+                            updatePolicyTotal();
+                        } else {
+                            updatePolicyTotal();
+                        }
+                    }
+                    qtyInput.addEventListener('input', recalcTotalFromUnit);
+                    unitPriceInput.addEventListener('input', recalcTotalFromUnit);
+                    const removeBtn = document.createElement('button');
+                    removeBtn.type = 'button';
+                    removeBtn.className = 'remove-btn';
+                    removeBtn.setAttribute('aria-label', '제거');
+                    removeBtn.textContent = '×';
+                    removeBtn.onclick = () => { estimateItems.splice(i, 1); renderPolicyEstimate(); };
+                    const totalWrap = document.createElement('span');
+                    totalWrap.style.display = 'flex';
+                    totalWrap.style.alignItems = 'center';
+                    totalWrap.style.gap = '4px';
+                    totalWrap.appendChild(totalInput);
+                    totalWrap.appendChild(document.createTextNode('원'));
+                    totalWrap.appendChild(removeBtn);
+                    row.appendChild(orderBtnGroup);
+                    row.appendChild(nameInput);
+                    row.appendChild(unitInput);
+                    row.appendChild(qtyInput);
+                    row.appendChild(unitPriceInput);
+                    row.appendChild(totalWrap);
+                    policyEstimateList.appendChild(row);
+                });
+                if (nestDiscountOn) {
+                    var sum = estimateItems.reduce(function(acc, e) { return acc + e.total; }, 0);
+                    var totalBefore = serviceFee + sum;
+                    var disc = getNestDiscount(totalBefore);
+                    if (totalBefore > 0 && disc.discountAmount > 0) {
+                        var discountRow = document.createElement('div');
+                        discountRow.className = 'policy-estimate-item policy-estimate-item-readonly';
+                        discountRow.innerHTML = '<span class="policy-estimate-item-name">둥지 할인 ' + disc.label + '</span><span class="policy-estimate-item-total">-' + fmt(disc.discountAmount) + '원</span>';
+                        policyEstimateList.appendChild(discountRow);
+                    }
+                }
+                updatePolicyTotal();
+            }
+
+            const btnAddEstimateRow = document.getElementById('btnAddEstimateRow');
+            if (btnAddEstimateRow) {
+                btnAddEstimateRow.addEventListener('click', () => {
+                    estimateItems.push({ name: '직접 입력', total: 0, withExtra: false, unit: '', qty: '', unitPrice: '' });
+                    renderPolicyEstimate();
+                    const lastRow = policyEstimateList.querySelector('.policy-estimate-item:last-child');
+                    if (lastRow) {
+                        const nameInput = lastRow.querySelector('.policy-item-name');
+                        if (nameInput) {
+                            nameInput.focus();
+                            nameInput.select();
+                        }
+                    }
+                });
+            }
+
+            const btnNestDiscount = document.getElementById('btnNestDiscount');
+            const nestDiscountRateEl = document.getElementById('nestDiscountRate');
+            if (btnNestDiscount) {
+                btnNestDiscount.addEventListener('click', () => {
+                    nestDiscountOn = !nestDiscountOn;
+                    btnNestDiscount.classList.toggle('active', nestDiscountOn);
+                    btnNestDiscount.setAttribute('aria-pressed', nestDiscountOn);
+                    renderPolicyEstimate();
+                });
+            }
+            if (nestDiscountRateEl) {
+                nestDiscountRateEl.addEventListener('input', () => {
+                    var v = parseInt(nestDiscountRateEl.value, 10);
+                    nestDiscountRate = isNaN(v) ? 10 : Math.min(100, Math.max(0, v));
+                    nestDiscountRateEl.value = nestDiscountRate;
+                    if (nestDiscountOn) renderPolicyEstimate();
+                });
+                nestDiscountRateEl.addEventListener('change', () => {
+                    var v = parseInt(nestDiscountRateEl.value, 10);
+                    nestDiscountRate = isNaN(v) ? 10 : Math.min(100, Math.max(0, v));
+                    nestDiscountRateEl.value = nestDiscountRate;
+                    if (nestDiscountOn) renderPolicyEstimate();
+                });
+            }
+            const btnNestModePct = document.getElementById('btnNestModePct');
+            const btnNestModeWon = document.getElementById('btnNestModeWon');
+            const nestInputPctWrap = document.getElementById('nestInputPctWrap');
+            const nestInputWonWrap = document.getElementById('nestInputWonWrap');
+            const nestDiscountAmountEl = document.getElementById('nestDiscountAmount');
+            if (btnNestModePct && btnNestModeWon && nestInputPctWrap && nestInputWonWrap) {
+                btnNestModePct.addEventListener('click', () => {
+                    nestDiscountByAmount = false;
+                    btnNestModePct.classList.add('active'); btnNestModePct.setAttribute('aria-pressed', 'true');
+                    btnNestModeWon.classList.remove('active'); btnNestModeWon.setAttribute('aria-pressed', 'false');
+                    nestInputPctWrap.classList.remove('hide'); nestInputWonWrap.classList.add('hide');
+                    if (nestDiscountOn) renderPolicyEstimate();
+                });
+                btnNestModeWon.addEventListener('click', () => {
+                    nestDiscountByAmount = true;
+                    btnNestModeWon.classList.add('active'); btnNestModeWon.setAttribute('aria-pressed', 'true');
+                    btnNestModePct.classList.remove('active'); btnNestModePct.setAttribute('aria-pressed', 'false');
+                    nestInputWonWrap.classList.remove('hide'); nestInputPctWrap.classList.add('hide');
+                    if (nestDiscountOn) renderPolicyEstimate();
+                });
+            }
+            if (nestDiscountAmountEl) {
+                nestDiscountAmountEl.addEventListener('input', () => {
+                    var v = parseInt(nestDiscountAmountEl.value.replace(/,/g, ''), 10);
+                    nestDiscountAmount = isNaN(v) ? 0 : Math.max(0, v);
+                    if (nestDiscountOn) renderPolicyEstimate();
+                });
+                nestDiscountAmountEl.addEventListener('change', () => {
+                    var v = parseInt(nestDiscountAmountEl.value.replace(/,/g, ''), 10);
+                    nestDiscountAmount = isNaN(v) ? 0 : Math.max(0, v);
+                    nestDiscountAmountEl.value = nestDiscountAmount;
+                    if (nestDiscountOn) renderPolicyEstimate();
+                });
+            }
+
+            function escapeHtml(s) {
+                if (s == null) return '';
+                const d = document.createElement('div');
+                d.textContent = String(s);
+                return d.innerHTML;
+            }
+
+            function generatePDF() {
+                const receiver = document.getElementById('quoteReceiver') && document.getElementById('quoteReceiver').value || '';
+                const workDesc = document.getElementById('quoteWorkDesc') && document.getElementById('quoteWorkDesc').value || '';
+                const note = document.getElementById('quoteNote') && document.getElementById('quoteNote').value || '';
+                const quoteDateInput = document.getElementById('quoteDate');
+                const quoteDateRaw = quoteDateInput && quoteDateInput.value || '';
+                let quoteDateStr = '';
+                let quoteDateDot = '';
+                if (quoteDateRaw) {
+                    const [y, m, d] = quoteDateRaw.split('-');
+                    quoteDateStr = y + '년 ' + m + '월 ' + d + '일';
+                    quoteDateDot = y + '.' + m + '.' + d;
+                }
+                const validDays = document.getElementById('quoteValidDays') && document.getElementById('quoteValidDays').value || '작성일로부터 30일';
+                const supplier = {
+                    regNo: (document.getElementById('supplierRegNo') && document.getElementById('supplierRegNo').value) || '',
+                    name: (document.getElementById('supplierName') && document.getElementById('supplierName').value) || '',
+                    rep: (document.getElementById('supplierRep') && document.getElementById('supplierRep').value) || '',
+                    addr: (document.getElementById('supplierAddr') && document.getElementById('supplierAddr').value) || '',
+                    type: (document.getElementById('supplierType') && document.getElementById('supplierType').value) || '',
+                    category: (document.getElementById('supplierCategory') && document.getElementById('supplierCategory').value) || '',
+                    phone: (document.getElementById('supplierPhone') && document.getElementById('supplierPhone').value) || '',
+                    fax: (document.getElementById('supplierFax') && document.getElementById('supplierFax').value) || '',
+                    manager: (document.getElementById('supplierManager') && document.getElementById('supplierManager').value) || '',
+                    contact: (document.getElementById('supplierContact') && document.getElementById('supplierContact').value) || '',
+                    sealDataUrl: (typeof window._quoteSealDataUrl !== 'undefined' && window._quoteSealDataUrl) || 'seal-default.png'
+                };
+
+                const sumItems = estimateItems.reduce((acc, e) => acc + e.total, 0);
+                const totalBefore = serviceFee + sumItems;
+                const disc = getNestDiscount(totalBefore);
+                const discountAmount = nestDiscountOn ? disc.discountAmount : 0;
+                const discountLabel = nestDiscountOn ? disc.label : '0%';
+                const totalExclVat = totalBefore - discountAmount;
+                const totalInclVat = Math.round(totalExclVat * 1.1);
+
+                const rawItems = [];
+                if (serviceFee > 0) {
+                    rawItems.push({
+                        name: '기본 출장비',
+                        amount: serviceFee,
+                        unit: '',
+                        qty: '',
+                        unitPrice: '',
+                        remark: ''
+                    });
+                }
+                estimateItems.forEach(function(e) {
+                    var qtyVal = (e.qty !== undefined && e.qty !== null && e.qty !== '') ? Number(e.qty) : null;
+                    var unitPriceVal = (e.unitPrice !== undefined && e.unitPrice !== null && e.unitPrice !== '') ? Number(e.unitPrice) : null;
+                    var amount = e.total || 0;
+                    if (qtyVal !== null && !isNaN(qtyVal) && unitPriceVal !== null && !isNaN(unitPriceVal)) {
+                        amount = Math.round(qtyVal * unitPriceVal);
+                    }
+                    rawItems.push({
+                        name: e.name || '',
+                        amount: amount,
+                        unit: e.unit != null ? String(e.unit) : '',
+                        qty: qtyVal !== null && !isNaN(qtyVal) ? String(qtyVal) : '',
+                        unitPrice: unitPriceVal !== null && !isNaN(unitPriceVal) ? unitPriceVal : '',
+                        remark: ''
+                    });
+                });
+                const allItems = [];
+                const otherItems = [];
+                rawItems.forEach(function(item) {
+                    if ((item.name || '').indexOf('기본 출장비') !== -1) {
+                        allItems.push(item);
+                    } else {
+                        otherItems.push(item);
+                    }
+                });
+                Array.prototype.push.apply(allItems, otherItems);
+
+                var pdfCss = '-webkit-print-color-adjust:exact;print-color-adjust:exact;';
+                var borderColor = '#555';
+                var tableStyle = 'border-collapse:collapse;border:1px solid ' + borderColor + ';width:100%;font-size:10px;' + pdfCss;
+                var headerBgGreen = '#c5e0b4';
+                var veryLightGreen = '#f5fbf0';
+                var footerBgGray = '#f3f4f6';
+                var thGreen = 'border:1px solid ' + borderColor + ';padding:4px 8px;text-align:left;background:' + headerBgGreen + ';color:#000;font-weight:700;font-size:10px;' + pdfCss;
+                var thSection = 'border:1px solid ' + borderColor + ';padding:4px 8px;text-align:left;background:#fff;font-weight:700;font-size:10px;' + pdfCss;
+                var tdStyle = 'border:1px solid ' + borderColor + ';padding:4px 8px;font-size:10px;' + pdfCss;
+                var tdCenter = 'border:1px solid ' + borderColor + ';padding:4px 8px;text-align:center;font-size:10px;' + pdfCss;
+                var tdRight = 'border:1px solid ' + borderColor + ';padding:4px 8px;text-align:right;font-size:10px;' + pdfCss;
+                var tdFooterLabel = 'border:1px solid ' + borderColor + ';padding:4px 8px;font-size:10px;background:' + footerBgGray + ';font-weight:700;' + pdfCss;
+                var tdFooterRight = 'border:1px solid ' + borderColor + ';padding:4px 8px;font-size:10px;background:' + footerBgGray + ';text-align:right;font-weight:700;' + pdfCss;
+                var tdFooterNote = 'border:1px solid ' + borderColor + ';padding:4px 8px;font-size:10px;background:' + footerBgGray + ';' + pdfCss;
+
+                var sealImgSrc = (supplier.sealDataUrl && supplier.sealDataUrl.indexOf('data:') === 0)
+                    ? supplier.sealDataUrl.replace(/"/g, '&quot;')
+                    : (supplier.sealDataUrl === 'seal-default.png' ? 'seal-default.png' : '');
+                var sealHtml = sealImgSrc
+                    ? '<img src="' + sealImgSrc + '" alt="인" style="width:36px;height:36px;display:inline-block;vertical-align:middle;object-fit:contain;">'
+                    : '<span style="display:inline-block;width:36px;height:36px;border:1px solid #555;border-radius:50%;margin-left:6px;" title="도장"></span><span style="margin-left:4px;">(인)</span>';
+
+                var receiverDisplay = (receiver || '').trim().indexOf('귀하') !== -1 ? (receiver || '') : ((receiver || '').trim() ? (receiver || '').trim() + ' 귀하' : '');
+
+                var topRowHeight = '32px';
+                var topBlockStyle = 'border-collapse:collapse;width:100%;font-size:10px;table-layout:fixed;' + pdfCss;
+                var topTd = 'border-bottom:1px solid #333;padding:8px;font-size:10px;line-height:1.4;height:' + topRowHeight + ';min-height:' + topRowHeight + ';box-sizing:border-box;vertical-align:middle;' + pdfCss;
+                var topTdLast = 'padding:8px;font-size:10px;line-height:1.4;height:' + topRowHeight + ';min-height:' + topRowHeight + ';box-sizing:border-box;vertical-align:middle;' + pdfCss;
+                var leftTdWrap = 'padding:8px;font-size:10px;line-height:1.4;height:' + topRowHeight + ';min-height:' + topRowHeight + ';box-sizing:border-box;vertical-align:middle;position:relative;' + pdfCss;
+                var leftLineStyle = 'position:absolute;bottom:8px;left:0;width:66%;border-bottom:1px solid #333;';
+
+                var html = '<div class="pdf-root" style="font-family:Pretendard,sans-serif;max-width:210mm;margin:0;padding:4px 8px 8px 8px;box-sizing:border-box;font-size:10px;line-height:1.35;' + pdfCss + '">';
+                html += '<h1 style="text-align:center;font-size:26px;margin:0 0 12px 0;font-weight:700;">견적서</h1>';
+
+                html += '<div style="display:flex;align-items:stretch;gap:12px;margin-bottom:6px;">';
+                html += '<table style="' + topBlockStyle + ' width:48%;"><tr><td style="' + leftTdWrap + '"><span style="font-size:12px;font-weight:700;">' + escapeHtml(receiverDisplay) + '</span><span style="' + leftLineStyle + '"></span></td></tr>';
+                var dateLine = '견적일자 : ' + (quoteDateDot || '');
+                var finalLine = '최종 견적액 : ' + fmt(totalExclVat) + '원 (VAT별도)';
+                var validLine = '견적유효일 : 작성일로부터 30일 이내';
+                html += '<tr><td style="' + leftTdWrap + ';text-align:left;">' + dateLine + '<span style="' + leftLineStyle + '"></span></td></tr>';
+                html += '<tr><td style="' + leftTdWrap + ';text-align:left;">' + finalLine + '<span style="' + leftLineStyle + '"></span></td></tr>';
+                html += '<tr><td style="' + topTdLast + ';text-align:left;">' + validLine + '</td></tr></table>';
+                html += '<table style="' + topBlockStyle + ' width:48%;"><tr><td style="' + topTd + ' width:28%;">등록번호</td><td style="' + topTd + '">' + escapeHtml(supplier.regNo) + '</td></tr>';
+                html += '<tr><td style="' + topTd + '">상호</td><td style="' + topTd + '">' + escapeHtml(supplier.name) + '</td></tr>';
+                html += '<tr><td style="' + topTd + '">대표자</td><td style="' + topTd + '">' + escapeHtml(supplier.rep) + ' ' + sealHtml + '</td></tr>';
+                html += '<tr><td style="' + topTd + '">사업장 주소</td><td style="' + topTd + '">' + escapeHtml(supplier.addr) + '</td></tr>';
+                var typeKindLabel = 'display:inline-block;width:2.5em;flex:0 0 2.5em;font-weight:inherit;' + pdfCss;
+                var typeKindGap = '20px';
+                var typeKindRowStyle = 'display:flex;justify-content:flex-start;align-items:center;white-space:nowrap;font-size:10px;line-height:1.4;' + pdfCss;
+                html += '<tr><td colspan="2" style="' + topTd + '"><div style="' + typeKindRowStyle + '"><span style="' + typeKindLabel + '">업태</span><span style="margin-left:8px;">' + escapeHtml(supplier.type) + '</span><span style="margin-left:' + typeKindGap + ';' + typeKindLabel + '">종목</span><span style="margin-left:8px;">' + escapeHtml(supplier.category) + '</span></div></td></tr>';
+                html += '<tr><td colspan="2" style="padding:0 8px;height:0;border:0;border-top:1px solid ' + borderColor + ';font-size:0;line-height:0;vertical-align:top;' + pdfCss + '"> </td></tr>';
+                html += '<tr><td style="' + topTdLast + '">담당자</td><td style="' + topTdLast + '">' + escapeHtml(supplier.manager) + ' / ' + escapeHtml(supplier.contact) + '</td></tr></table>';
+                html += '</div>';
+
+                html += '<p style="margin:8px 0 10px 0;font-size:10px;">아래와 같이 견적서를 제출드립니다.</p>';
+
+                html += '<table style="' + tableStyle + ' margin-bottom:8px;"><tr>';
+                html += '<th style="' + thGreen + ' width:12%;">구분</th><th style="' + thGreen + ' width:56%;">공사 내용</th><th style="' + thGreen + ' width:32%;">총 견적액(VAT별도)</th></tr>';
+                html += '<tr><td style="' + tdStyle + '">금액</td><td style="' + tdStyle + '">' + escapeHtml(workDesc || '') + '</td><td style="' + tdStyle + ' font-weight:700;">' + fmt(totalExclVat) + '원</td></tr></table>';
+
+                var thCenter = thGreen + 'text-align:center;';
+                var headerRow = ''
+                    + '<tr>'
+                    + '<th style="' + thGreen + ' width:28px;">순번</th>'
+                    + '<th style="' + thGreen + '">품명</th>'
+                    + '<th style="' + thCenter + ' width:40px;">단위</th>'
+                    + '<th style="' + thCenter + ' width:40px;">수량</th>'
+                    + '<th style="' + thCenter + ' width:60px;">단가</th>'
+                    + '<th style="' + thCenter + ' width:70px;">금액</th>'
+                    + '<th style="' + thCenter + ' width:80px;">비고</th>'
+                    + '</tr>';
+
+                html += '<table style="' + tableStyle + ' margin-bottom:6px;">' + headerRow;
+
+                var rowNo = 0;
+                allItems.forEach(function(item, idx) {
+                    rowNo++;
+                    var amount = Number(item.amount) || 0;
+                    var unit = item.unit != null ? String(item.unit) : '';
+                    var qty = item.qty != null ? String(item.qty) : '';
+                    var unitPrice = item.unitPrice != null ? Number(item.unitPrice) : null;
+                    var remark = item.remark != null ? String(item.remark) : '';
+                    html += '<tr>'
+                        + '<td style="' + tdCenter + '">' + rowNo + '</td>'
+                        + '<td style="' + tdStyle + '">' + escapeHtml(item.name || '') + '</td>'
+                        + '<td style="' + tdCenter + '">' + escapeHtml(unit) + '</td>'
+                        + '<td style="' + tdCenter + '">' + escapeHtml(qty) + '</td>'
+                        + '<td style="' + tdCenter + '">' + (unitPrice != null && !isNaN(unitPrice) && unitPrice !== 0 ? fmt(unitPrice) : '') + '</td>'
+                        + '<td style="' + tdRight + '">' + (amount ? fmt(amount) : '') + '</td>'
+                        + '<td style="' + tdCenter + '">' + escapeHtml(remark) + '</td>'
+                        + '</tr>';
+                });
+
+                // 표 하단 요약: 총 합계 → 둥지할인 → 최종 견적가
+                html += '<tr>'
+                    + '<td style="' + tdFooterLabel + '"></td>'
+                    + '<td style="' + tdFooterLabel + '">총 합계</td>'
+                    + '<td style="' + tdFooterLabel + '"></td>'
+                    + '<td style="' + tdFooterLabel + '"></td>'
+                    + '<td style="' + tdFooterLabel + '"></td>'
+                    + '<td style="' + tdFooterRight + '">' + fmt(totalBefore) + '</td>'
+                    + '<td style="' + tdFooterNote + '"></td>'
+                    + '</tr>';
+
+                html += '<tr>'
+                    + '<td style="' + tdFooterLabel + '"></td>'
+                    + '<td style="' + tdFooterLabel + '">둥지할인(' + discountLabel + ')</td>'
+                    + '<td style="' + tdFooterLabel + '"></td>'
+                    + '<td style="' + tdFooterLabel + '"></td>'
+                    + '<td style="' + tdFooterLabel + '"></td>'
+                    + '<td style="' + tdFooterRight + '">' + (discountAmount > 0 ? '-' + fmt(discountAmount) : '0') + '</td>'
+                    + '<td style="' + tdFooterNote + '"></td>'
+                    + '</tr>';
+
+                html += '<tr>'
+                    + '<td style="' + tdFooterLabel + '"></td>'
+                    + '<td style="' + tdFooterLabel + '">최종 견적가</td>'
+                    + '<td style="' + tdFooterLabel + '"></td>'
+                    + '<td style="' + tdFooterLabel + '"></td>'
+                    + '<td style="' + tdFooterLabel + '"></td>'
+                    + '<td style="' + tdFooterRight + '">' + fmt(totalExclVat) + '</td>'
+                    + '<td style="' + tdFooterNote + '">부가세 10% 별도</td>'
+                    + '</tr>';
+
+                html += '</table>';
+
+                var noteFormatted = (note || '').trim().split(/\r?\n/).map(function(line) { return line ? '▶ ' + escapeHtml(line) : ''; }).join('<br>');
+                html += '<table style="' + tableStyle + ' margin-bottom:0;"><tr><th style="' + thGreen + '">특이사항</th></tr>';
+                html += '<tr><td style="' + tdStyle + ' min-height:36px; line-height:1.35; font-size:9px;">' + (noteFormatted || '') + '</td></tr></table>';
+                html += '</div>';
+
+                var el = document.getElementById('pdfTemplate');
+                var wrap = document.getElementById('pdfWrap');
+                function hidePdfPreview() {
+                    if (wrap) {
+                        wrap.style.display = 'none';
+                        wrap.style.position = 'absolute';
+                        wrap.style.left = '-9999px';
+                        wrap.style.top = '';
+                        wrap.style.width = '';
+                        wrap.style.height = '';
+                        wrap.style.maxWidth = '';
+                        wrap.style.margin = '';
+                        wrap.style.background = '';
+                        wrap.style.zIndex = '';
+                        wrap.style.overflow = '';
+                        wrap.style.flexDirection = '';
+                    }
+                }
+                if (el) {
+                    el.innerHTML = html;
+                    document.getElementById('quoteInfoModal').classList.remove('is-open');
+                    if (wrap) {
+                        wrap.style.display = 'flex';
+                        wrap.style.flexDirection = 'column';
+                        wrap.style.position = 'fixed';
+                        wrap.style.left = '0';
+                        wrap.style.top = '0';
+                        wrap.style.width = '100%';
+                        wrap.style.height = '100%';
+                        wrap.style.margin = '0';
+                        wrap.style.background = '#fff';
+                        wrap.style.zIndex = '10000';
+                        wrap.style.overflow = 'hidden';
+                        wrap.style.boxSizing = 'border-box';
+                    }
+                    var btnPdfClose = document.getElementById('btnPdfClose');
+                    var btnPdfDownload = document.getElementById('btnPdfDownload');
+                    if (btnPdfClose) btnPdfClose.onclick = hidePdfPreview;
+                    var pdfOpt = {
+                        margin: [8, 8, 8, 8],
+                        filename: '견적서.pdf',
+                        image: { type: 'jpeg', quality: 1 },
+                        html2canvas: { scale: 2, useCORS: true },
+                        jsPDF: { unit: 'mm', format: 'a4', hotfixes: ['px_scaling'] },
+                        pagebreak: { mode: ['avoid-all', 'css', 'legacy'], before: '.pdf-page-break' }
+                    };
+                    function doPdfSave() {
+                        if (typeof html2pdf !== 'undefined') {
+                            html2pdf().set(pdfOpt).from(el).save().then(hidePdfPreview);
+                        } else {
+                            window.print();
+                            hidePdfPreview();
+                        }
+                    }
+                    if (btnPdfDownload) btnPdfDownload.onclick = doPdfSave;
+                    if (typeof html2pdf !== 'undefined') {
+                        doPdfSave();
+                    } else {
+                        window.print();
+                        hidePdfPreview();
+                    }
+                }
+            }
+
+            const btnGeneratePDF = document.getElementById('btnGeneratePDF');
+            if (btnGeneratePDF) btnGeneratePDF.addEventListener('click', generatePDF);
+
+            categories.forEach(cat => {
+                const li = document.createElement('li');
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'nav-btn';
+                btn.textContent = cat.name;
+                btn.onclick = () => {
+                    selectedCatId = cat.id;
+                    selectedGroupId = null;
+                    document.querySelectorAll('#navCats .nav-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    navGroups.innerHTML = '';
+                    cat.groups.forEach(gr => {
+                        const gli = document.createElement('li');
+                        const gbtn = document.createElement('button');
+                        gbtn.type = 'button';
+                        gbtn.className = 'nav-btn';
+                        gbtn.textContent = gr.name;
+                        gbtn.onclick = () => {
+                            selectedGroupId = gr.id;
+                            document.querySelectorAll('#navGroups .nav-btn').forEach(b => b.classList.remove('active'));
+                            gbtn.classList.add('active');
+                            renderItems(gr.items, gr.name);
+                        };
+                        gli.appendChild(gbtn);
+                        navGroups.appendChild(gli);
+                    });
+                };
+                li.appendChild(btn);
+                navCats.appendChild(li);
+            });
+
+            function renderItems(items, groupName) {
+                const q = (searchInput && searchInput.value || '').toLowerCase().trim();
+                let list = items || [];
+                if (q) {
+                    list = list.filter(i => (i.name || '').toLowerCase().includes(q));
+                }
+                itemsPlaceholder.style.display = list.length ? 'none' : 'block';
+                itemsList.innerHTML = '';
+                if (!list.length) return;
+                const section = document.createElement('div');
+                section.className = 'item-section';
+                const title = document.createElement('div');
+                title.className = 'item-section-title';
+                title.textContent = groupName || '항목';
+                section.appendChild(title);
+                list.forEach(item => {
+                    const total = getItemTotal(item);
+                    const extraFee = parseExtraFee(item.note);
+                    const mat = item.material && item.material.general != null ? item.material.general : 0;
+                    const row = document.createElement('div');
+                    row.className = 'item-row';
+                    if (extraFee > 0) {
+                        row.innerHTML =
+                            '<div class="item-name">' + (item.name || '') + '</div>' +
+                            '<div class="item-meta">설치·교체비 ' + fmt(item.installFee || 0) + '원' + (mat ? ' / 자재비(일반) ' + fmt(mat) + '원' : '') + '</div>' +
+                            (item.note ? '<div class="item-note">' + item.note + '</div>' : '') +
+                            '<div class="price-stack">' +
+                            '<span>기본 소계 ' + fmt(total) + '원</span>' +
+                            '<span class="price-with-extra">추가 시공비 ' + fmt(extraFee) + '원 (해당 시만 별도 추가)</span>' +
+                            (mat ? '<span class="price-with-extra">자재비 ' + fmt(mat) + '원 (별도 추가)</span>' : '') +
+                            '<span class="btn-group-add">' +
+                            '<button type="button" class="btn-add-estimate btn-add-base">기본만 추가</button>' +
+                            '<button type="button" class="btn-add-estimate btn-add-with-extra">추가 시공비만 추가</button>' +
+                            (mat ? '<button type="button" class="btn-add-estimate btn-add-material">자재비만 추가</button>' : '') +
+                            '</span></div>';
+                        row.querySelector('.btn-add-base').onclick = () => {
+                            estimateItems.push({ name: item.name, total: total, withExtra: false, unit: '', qty: '', unitPrice: '' });
+                            renderPolicyEstimate();
+                        };
+                        row.querySelector('.btn-add-with-extra').onclick = () => {
+                            estimateItems.push({ name: item.name + ' (추가 시공비)', total: extraFee, withExtra: true, unit: '', qty: '', unitPrice: '' });
+                            renderPolicyEstimate();
+                        };
+                        if (mat) {
+                            row.querySelector('.btn-add-material').onclick = () => {
+                                estimateItems.push({ name: item.name + ' (자재비)', total: mat, withExtra: false, unit: '', qty: '', unitPrice: '' });
+                                renderPolicyEstimate();
+                            };
+                        }
+                    } else {
+                        row.innerHTML =
+                            '<div class="item-name">' + (item.name || '') + '</div>' +
+                            '<div class="item-meta">설치·교체비 ' + fmt(item.installFee || 0) + '원' + (mat ? ' / 자재비(일반) ' + fmt(mat) + '원' : '') + '</div>' +
+                            (item.note ? '<div class="item-note">' + item.note + '</div>' : '') +
+                            '<div class="price-stack">' +
+                            '<span>소계 ' + fmt(total) + '원</span>' +
+                            (mat ? '<span class="price-with-extra">자재비 ' + fmt(mat) + '원 (별도 추가)</span>' : '') +
+                            '<span class="btn-group-add">' +
+                            '<button type="button" class="btn-add-estimate">기본 추가</button>' +
+                            (mat ? '<button type="button" class="btn-add-estimate btn-add-material">자재비만 추가</button>' : '') +
+                            '</span></div>';
+                        row.querySelector('.btn-add-estimate:not(.btn-add-material)').onclick = () => {
+                            estimateItems.push({ name: item.name, total: total, withExtra: false, unit: '', qty: '', unitPrice: '' });
+                            renderPolicyEstimate();
+                        };
+                        if (mat) {
+                            row.querySelector('.btn-add-material').onclick = () => {
+                                estimateItems.push({ name: item.name + ' (자재비)', total: mat, withExtra: false, unit: '', qty: '', unitPrice: '' });
+                                renderPolicyEstimate();
+                            };
+                        }
+                    }
+                    section.appendChild(row);
+                });
+                itemsList.appendChild(section);
+            }
+
+            searchInput.addEventListener('input', function() {
+                if (!selectedGroupId) return;
+                const cat = categories.find(c => c.id === selectedCatId);
+                if (!cat) return;
+                const gr = cat.groups.find(g => g.id === selectedGroupId);
+                if (gr) renderItems(gr.items, gr.name);
+            });
+
+            if (categories.length) {
+                const first = categories[0];
+                const firstBtn = navCats.querySelector('.nav-btn');
+                if (firstBtn) { firstBtn.click(); }
+            }
+        })();
+    </script>
+</body>
+</html>
