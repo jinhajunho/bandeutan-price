@@ -1178,6 +1178,7 @@
                 var thGreen = 'border:1px solid ' + borderColor + ';padding:4px 8px;text-align:left;background:' + headerBgGreen + ';color:#000;font-weight:700;font-size:10px;' + pdfCss;
                 var thSection = 'border:1px solid ' + borderColor + ';padding:4px 8px;text-align:left;background:#fff;font-weight:700;font-size:10px;' + pdfCss;
                 var tdStyle = 'border:1px solid ' + borderColor + ';padding:4px 8px;font-size:10px;' + pdfCss;
+                var tdCenter = 'border:1px solid ' + borderColor + ';padding:4px 8px;text-align:center;font-size:10px;' + pdfCss;
                 var tdRight = 'border:1px solid ' + borderColor + ';padding:4px 8px;text-align:right;font-size:10px;' + pdfCss;
                 var tdFooterLabel = 'border:1px solid ' + borderColor + ';padding:4px 8px;font-size:10px;background:' + footerBgGray + ';font-weight:700;' + pdfCss;
                 var tdFooterRight = 'border:1px solid ' + borderColor + ';padding:4px 8px;font-size:10px;background:' + footerBgGray + ';text-align:right;font-weight:700;' + pdfCss;
@@ -1226,17 +1227,18 @@
 
                 html += '<table style="' + tableStyle + ' margin-bottom:8px;"><tr>';
                 html += '<th style="' + thGreen + ' width:12%;">구분</th><th style="' + thGreen + ' width:56%;">공사 내용</th><th style="' + thGreen + ' width:32%;">총 견적액(VAT별도)</th></tr>';
-                html += '<tr><td style="' + tdStyle + '">금액</td><td style="' + tdStyle + '">' + escapeHtml(workDesc || '') + '</td><td style="' + tdRight + ' font-weight:700;">' + fmt(totalExclVat) + '</td></tr></table>';
+                html += '<tr><td style="' + tdStyle + '">금액</td><td style="' + tdStyle + '">' + escapeHtml(workDesc || '') + '</td><td style="' + tdStyle + ' font-weight:700;">' + fmt(totalExclVat) + '원</td></tr></table>';
 
+                var thCenter = thGreen + 'text-align:center;';
                 var headerRow = ''
                     + '<tr>'
                     + '<th style="' + thGreen + ' width:28px;">순번</th>'
                     + '<th style="' + thGreen + '">품명</th>'
-                    + '<th style="' + thGreen + ' width:40px;">단위</th>'
-                    + '<th style="' + thGreen + ' width:40px;">수량</th>'
-                    + '<th style="' + thGreen + ' width:60px;">단가</th>'
-                    + '<th style="' + thGreen + ' width:70px;">금액</th>'
-                    + '<th style="' + thGreen + ' width:80px;">비고</th>'
+                    + '<th style="' + thCenter + ' width:40px;">단위</th>'
+                    + '<th style="' + thCenter + ' width:40px;">수량</th>'
+                    + '<th style="' + thCenter + ' width:60px;">단가</th>'
+                    + '<th style="' + thCenter + ' width:70px;">금액</th>'
+                    + '<th style="' + thCenter + ' width:80px;">비고</th>'
                     + '</tr>';
 
                 html += '<table style="' + tableStyle + ' margin-bottom:6px;">' + headerRow;
@@ -1250,13 +1252,13 @@
                     var unitPrice = item.unitPrice != null ? Number(item.unitPrice) : null;
                     var remark = item.remark != null ? String(item.remark) : '';
                     html += '<tr>'
-                        + '<td style="' + tdStyle + '">' + rowNo + '</td>'
+                        + '<td style="' + tdCenter + '">' + rowNo + '</td>'
                         + '<td style="' + tdStyle + '">' + escapeHtml(item.name || '') + '</td>'
-                        + '<td style="' + tdStyle + '">' + escapeHtml(unit) + '</td>'
-                        + '<td style="' + tdRight + '">' + escapeHtml(qty) + '</td>'
-                        + '<td style="' + tdRight + '">' + (unitPrice != null && !isNaN(unitPrice) && unitPrice !== 0 ? fmt(unitPrice) : '') + '</td>'
-                        + '<td style="' + tdRight + '">' + (amount ? fmt(amount) : '') + '</td>'
-                        + '<td style="' + tdStyle + '">' + escapeHtml(remark) + '</td>'
+                        + '<td style="' + tdCenter + '">' + escapeHtml(unit) + '</td>'
+                        + '<td style="' + tdCenter + '">' + escapeHtml(qty) + '</td>'
+                        + '<td style="' + tdCenter + '">' + (unitPrice != null && !isNaN(unitPrice) && unitPrice !== 0 ? fmt(unitPrice) : '') + '</td>'
+                        + '<td style="' + tdCenter + '">' + (amount ? fmt(amount) : '') + '</td>'
+                        + '<td style="' + tdCenter + '">' + escapeHtml(remark) + '</td>'
                         + '</tr>';
                 });
 
